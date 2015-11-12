@@ -1,0 +1,21 @@
+<script type="text/javascript">
+	$(document).ready(function(){
+		var $grDscInfoTpl=$("#grDscInfo").clone();
+		$("#grDscInfo").remove();
+		$(".txt_more .btn_more").click(function(e){
+			e.preventDefault();
+			var params=$(this).parents(".txt_more").params();
+			$grDscInfo=$grDscInfoTpl.clone();
+			$.getJSON("univ/cret/gdmg/findGrCrapyAplDscWForm.do",params,function(data){
+				if(data.grCrapyAplDsc.length>0){
+					$.extend(params,data.grCrapyAplDsc[0])
+				}
+				$grDscInfo.bindParams(params);
+				console.log(params);
+				$grDscInfo.layout({
+					"title":"성적정정신청결과조회"
+				});
+			});
+		});
+	});
+</script>

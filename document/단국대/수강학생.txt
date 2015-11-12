@@ -1,0 +1,100 @@
+<!-- [탭]수강학생 //start -->
+<div class="tab_cont" id="tab-3">
+	<div class="section_tbl">
+		<div class="section_mid_tit">
+			<h4 class="tit_mid">수강학생</h4>
+			<p class="txt_number f_r">
+				검색결과는 [ <em class="fc_orange"> ${fn:length(cuslTlsnList)} 건</em> ] 입니다.
+			</p>
+		</div>
+		<div class="tbl_column">
+			<table id="ltadTbl" class="tbl_mixed">
+				<caption>수강학생</caption>
+				<colgroup>
+					<col style="width: 5%;" />
+					<col style="width: 8%;" />
+					<col style="width: 7%;" />
+					<col style="width: 5%;" />
+					<col style="width: 17%;" />
+					<col style="width: 8%;" />
+					<col style="width: 10%;" />
+					<col style="width: 10%;" />
+					<col style="width: *%;" />
+					<col style="width: 10%;" />
+				</colgroup>
+				<thead>
+					<tr class="tablesorter-headerRow" role="row">
+						<th scope="col" data-sorter="false">#</th>
+						<th scope="col">학번</th>
+						<th scope="col">성명</th>
+						<th scope="col">학년</th>
+						<th scope="col">소속</th>
+						<th scope="col">
+							현재학기<br />상담횟수
+						</th>
+						<th scope="col">지도학생여부</th>
+						<th scope="col">공학인증</th>
+						<th scope="col">Email</th>
+						<th scope="col">휴대폰번호</th>
+					</tr>
+				</thead>
+			</table>
+			<div id="dvTbody3" class="">
+				<table id="tblTlsnList" class="tbl_mixed tbl_click" name="tblTabs3">
+					<caption>수강학생</caption>
+					<colgroup>
+						<col style="width: 5%;" />
+						<col style="width: 8%;" />
+						<col style="width: 7%;" />
+						<col style="width: 5%;" />
+						<col style="width: 17%;" />
+						<col style="width: 8%;" />
+						<col style="width: 10%;" />
+						<col style="width: 10%;" />
+						<col style="width: *%;" />
+						<col style="width: 10%;" />
+					</colgroup>
+					<tbody>
+						<c:choose>
+							<c:when test="${!empty cuslTlsnList}">
+								<c:forEach var="cuslTlsnList" items="${cuslTlsnList}" varStatus="loop">
+									<tr>
+										<td class="left_line ta_c numbering">${loop.count}</td>
+										<td class="ta_c">
+											<a href="univ/cusl/cslm/views/findCounslInptForm.do?stuid=${cuslTlsnList.stuid}&yy=${cslmSearch.yy}&semCd=${cslmSearch.semCd}&tabIndex=1&callPageGbn=cuslInput&pTabIndex=2&selKey=${selKeyVal}&pSubjId=${selPsubjId}&pOpOrgid=${selPopOrgid}&pDvclsNb=${selPdvclsNb}" data-method="post">
+												<c:out value="${cuslTlsnList.stuid}" escapeXml="true" />
+											</a>
+										</td>
+										<td class="ta_c">${cuslTlsnList.nm}</td>
+										<td class="ta_c">${cuslTlsnList.schgr}</td>
+										<td class="ta_l">${cuslTlsnList.pstnOrgzNm}</td>
+										<td class="ta_c">${cuslTlsnList.curSemCuslCnt}</td>
+										<td class="ta_c">${cuslTlsnList.cuslStudYn}</td>
+										<td class="ta_c">${cuslTlsnList.abeekYn}</td>
+										<td class="ta_l">${cuslTlsnList.eml}</td>
+										<td class="ta_l">${cuslTlsnList.mpTelno}</td>
+									</tr>
+								</c:forEach>
+							</c:when>
+							<c:otherwise>
+								<tr class="empty">
+									<td class="ta_c" colspan="10">조회된 데이터가 없습니다.</td>
+								</tr>
+							</c:otherwise>
+						</c:choose>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<br />
+	<!-- 섹션 버튼 -->
+	<div class="section_btn">
+		<div class="f_r">
+			<ui:button type="button" name="tlsnXslBtn" text="엑셀 다운로드" className="btn_basic" enabled="true" role="ED" />
+		</div>
+		<!-- 비트랜젝션 -->
+	</div>
+	<!-- //섹션 버튼 -->
+</div>
+<!-- [탭]수강학생 //end -->

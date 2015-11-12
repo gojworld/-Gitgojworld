@@ -1,0 +1,30 @@
+	/********** 컴퍼넌트 클래스 네이밍 규칙 **********/
+	/*
+	[Component:소문자약어(3자)/4자 이하는 약어사용안함] + [Location:Frame+Section/대문자] + [Caption:해당 컴퍼넌트 특성을 알아보기 쉬운 단어(첫단어 대문자)]
+	* Component와 Location, Caption 사이에는 “_”를 표기합니다.   ex) btn_WFSA_Caption
+	---------------------------------------------------------------------------------------------------------------------------------------------------------
+	[Component]			[Location:Frame]		[Location:Section]			[Location]
+	Button		- btn		Top Frame	- TF							= TF
+	Calendar	- cal 		Left Frame	- LF							= LF
+	CheckBox	- chk		Right Frame	- RF							= RF
+	Combo		- cmb		Bottom Frame	- BF							= BF
+	Div		- div		Work Frame	- WF							= WF
+	Edit		- edt						1depth Search Area	- SA		= WFSA
+	Grid		- grd						2depth Search Area	- SA2		= WFSA2      
+	GroupBox	- grb						Detail Area		- DA		= WFDA
+	ImageViewer	- img		Popup		- POP							= POP
+	ListBox		- lst						Search Area		- SA		= POPSA
+	MaskEdit	- msk						Detail Area		- DA		= POPDA
+	Menu		- mnu		Login		- LOGIN							= Login		
+	Progressbar	- pgb		Message Box	- MSG							= MSG
+	PopupDiv	- pdiv
+	Radio		- rdo
+	Shape		- shp
+	Spin		- spn
+	Static		- sta
+	Tab		- tab
+	TabPage		- tabp
+	TextArea	- txt
+	GraphicPath	- gp
+	Splitter	- spt
+	*/

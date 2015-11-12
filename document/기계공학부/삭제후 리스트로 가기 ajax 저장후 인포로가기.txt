@@ -1,0 +1,32 @@
+$("#deleteBtn").click(function(e){
+				e.preventDefault();
+				$("#orgzInfo").find("[name$='status']").val("8");
+				$.ajax({
+					"url":"/manage/sustIntro/saveOrgz.do",
+					"data":$("#orgzInfo").serialize(),
+					"type":"post",
+					"success":function(){
+						$("#orgzInfo").attr("action","./findSustOrgzList.do");
+						$("#orgzInfo").submit();
+					}
+				});
+			});
+
+
+
+
+
+
+$("#saveBtn").click(function(e){
+				e.preventDefault();
+				//$("#orgzInfo").submit();
+				$.ajax({
+					"url":"/manage/sustIntro/saveOrgz.do",
+					"data":$("#orgzInfo").serialize(),
+					"type":"post",
+					"success":function(){
+						$("#orgzInfo").attr("action","./findSustOrgzInfo.do");
+						$("#orgzInfo").submit();
+					}
+				});
+			});

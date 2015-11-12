@@ -1,0 +1,78 @@
+
+mRemoteNG정보
+syworks // 1정보보호@
+
+개발서버
+61.100.241.161
+yap.syworks.net
+
+
+git계정
+git // yap만들기
+
+
+ssh://git@www.yap.net/home/git/yap.git
+
+
+yap 서버정보
+210.122.11.140
+yap // helloyapworld
+
+
+
+postgresql
+postgresql // postgresql
+yap // yap
+
+
+개발서버 계정
+postgres // db만들기
+yap // yap
+
+
+서버반영
+syworks / vpn -> deploy.sh -> git / yap만들기
+
+commit -> 자기local에 올라감(개발, 실서버 반영은 따로 mRemote)
+
+
+
+
+show history -> release(실서버) / master(개발)
+
+localhost -> 61.100.241.161:5432
+
+
+db정보확인 -> postgresql - pgadmin
+
+
+
+
+
+
+
+istall 등 페이지 수정시에는
+ftp로 수정하면 바로바로 적용됨
+
+개발서버 접속정보
+61.100.241.161
+syworks // 1정보보호@
+
+실서버 접속정보
+yap.net
+yap // helloyapworld
+
+고급옵션에서 sftp 설정하고 포트 22
+
+저장하면 개발서버/실서버로 바로 반영됨
+
+
+
+http://yap.net
+
+실서버 관리자(yap사무실과 개발사 사무실에서만 접근 허용)
+http://yap.net/admin
+admin / admin12#$
+
+개발서버 관리자
+yap.syworks.net/admin/loginForm

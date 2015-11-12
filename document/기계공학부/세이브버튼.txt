@@ -1,0 +1,29 @@
+$("#saveBtn").click(function(e){
+			e.preventDefault();
+			if(!$orgzInfo.validate()) return false;
+			$.ajax({
+				"url":"/manage/sustIntro/saveOrgz.do",
+				"data":$orgzInfo.serialize(),
+				"type":"post",
+				"dataType":"json",
+				"success":function(result){
+					if(result.orgz.status!=-1){
+						$.fun.alert({
+							"content":result.orgz.status==2?"등록 되었습니다.":"수정 되었습니다.",
+							"action":function(){
+								$.submit({
+									"method":"get",
+									"action":"./findSustOrgzInfo.do"
+								},{
+									"orgzSeq":result.orgz.orgzSeq
+								});
+							}
+						});
+					}else{
+						$.fun.alert({
+							"content":"요청하신 작업이 실패되었습니다."
+						});
+					}
+				}
+			});
+		});

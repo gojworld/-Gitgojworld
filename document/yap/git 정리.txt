@@ -1,0 +1,36 @@
+git 계정
+git / yap만들기
+
+ssh://git@www.yap.net/home/git/yap.git
+
+
+
+push 올림(밀다) pull 내림(당기다)
+
+team - commit => 로컬환경에 커밋(개발/실서버에 적용되지 않음)
+	1. message에 2015-10-22 index화면수정 // 이렇게 수정날짜와 수정내용을 적어서 커밋을 한다.
+	2. commit만 누르면 그냥 커밋 , commit and push를 누르면 개발서버에 커밋
+
+team - show in history => 히스토리 보기
+	master => 개발서버
+	release => 실서버
+
+team - push brach master => branch에 release로 적고 커밋하면 실서버로 커밋
+
+
+
+
+개발 / 실서버에 커밋 후 ./deploy.sh 로 배포하면 서버에 적용됨
+
+
+
+
+실서버 접속 정보
+yap.net
+yap // helloyapworld
+
+
+
+개발서버 접속 정보
+61.100.241.161
+syworks // 1정보보호@

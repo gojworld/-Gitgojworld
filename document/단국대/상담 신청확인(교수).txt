@@ -1,0 +1,1340 @@
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ include file="/WEB-INF/includes/taglibs.jsp"%>
+<script src="js/nicescroll/jquery.nicescroll.min.js"></script>
+<script type="text/javascript">
+	/******************************
+	 * Util function(사용자정의 함수)
+	 ******************************/
+	/**
+	 * form submit을 발생 시킨다.
+	 *
+	 * @see Dependencies : jquery-1.7.2.min.js or later
+	 * @param {String}
+	 *            action
+	 *            <ul>
+	 *            <li>form action</li>
+	 *            </ul>
+	 * @param {Object}
+	 *            param
+	 *            <ul>
+	 *            <li>파라미터 Map</li>
+	 *            </ul>
+	 * @param {Object}
+	 *            option
+	 *            <ul>
+	 *            <li>form option</li>
+	 *            </ul>
+	 * @author mks
+	 * @since 2015.02.02
+	 */
+	var $formSubmit=function $formSubmit(action,paramMap,option){
+		$("#cuslDiary").attr($.extend({
+			action:action,
+			method:'post'
+		},option));
+		for( var key in paramMap){
+			$.each($.makeArray(paramMap[key]),function(index,element){
+				$("#cuslDiary").append($('<input>').attr({
+					type:'hidden',
+					name:key
+				}).val(typeof element==='object'?JSON.stringify(element):element));
+			});
+		}
+		$("#cuslDiary").submit();
+	};
+	// [공통-학생팝업] 콜백
+	function srecCallback(retObj){
+		var url=CONST_SCREG_URL;
+		var params={
+			yy:$("#yy").val(),
+			semCd:$("#semCd").val(),
+			stuid:$("#stuid").val(),
+			tabIndex:$("#tabIndex").val()
+		};
+		$.getJSON(url,params,function(data){
+			var $paramData=new Array();
+			var studListTemplate=$.validator.format($.trim($("#studListTemplate").val()));
+			$("#tblUserList > tbody").empty();
+			$.each(data.cuslUserList,function(index,entry){
+				$paramData.push(index+1);
+				$paramData.push(entry.yy);
+				$paramData.push(entry.semCd);
+				$paramData.push(entry.stuid);
+				$paramData.push(entry.nm);
+				$paramData.push(entry.schgr);
+				$paramData.push(entry.pstnOrgzNm);
+				$paramData.push(entry.curSemCuslCnt);
+				$paramData.push(entry.abeekYn);
+				$paramData.push(entry.yySemCd);
+				$(studListTemplate($paramData)).appendTo("#tblUserList > tbody");
+				$paramData=[];
+			});
+			if(data.cuslUserList.length==0){
+				$("#tblUserList > tbody").append("<td class=\"ta_c\" colspan=\"8\">조회된 데이터가 없습니다.</td>");
+			}
+			$("#dv_studCnt").find("em").text(data.cuslUserList.length);
+			$(".photo").empty();
+			var $tc=$("#tblScreg"); // form id
+			$.each(data.stuInfo,function(key,val){
+				if(key=="stuid"){
+					//$tc.find("#scregStuid").val(val);
+					$tc.find("#scregStuid").text(val);
+				}
+				if(key=="nm"){
+					$tc.find("#koNm").text(val);
+				}
+				//$tc.find("#"+key).val(val);                // 조회된 json data를 loop돌며 key값에 해당하는 element를 찾아 val를 셋팅해준다.
+				if(val==null){
+					$tc.find("#"+key).text("");
+				}else{
+					$tc.find("#"+key).text(val); // 조회된 json data를 loop돌며 key값에 해당하는 element를 찾아 val를 셋팅해준다.
+				}
+			});
+			if(data.stuInfo.fileSeq!=null&&data.stuInfo.fileSeq!=""&&data.stuInfo.fileSeq!="null"){
+				$(".photo").append("<img src='comm/syst/file/download.do?fileSeq="+data.stuInfo.fileSeq+"&fileCdval="+data.stuInfo.fileCdval+"' \>");
+			}
+		});
+	}
+	// [공통-학생팝업] 호출
+	var srecPopup=function srecPopup(autoClose){
+		var searchParam={
+			stuidElement:"stuid",
+			nmElement:"nm",
+			stuid:$("#nm").val(),
+			relatWokCd:$("#relatWokCd").val(),
+			acsAlRngCd:$("#acsAlRngCd").val(), // 데이타보안관련하여 교수들은 12권한으로 검색
+			callback:"srecCallback"
+		};
+		$.openSrecSearchPopup(searchParam,autoClose);
+	};
+	/******************************
+	 * 변수 선언
+	 ******************************/
+	var CONST_S_URL='<c:url value="univ/cusl/cslm/views/findCuslReg.do" />';
+	var CONST_SCREG_URL='<c:url value="univ/cusl/cslm/findCuslUserDeInfoData.do" />';
+	var CONST_TLSN_URL='<c:url value="univ/cusl/cslm/findCuslTlsnList.do" />';
+	var $tmpSelVal=0;
+	/******************************
+	 * 폼 로드
+	 ******************************/
+	$(document).ready(function(){
+		/******************
+		 *Init(초기화)
+		 *****************/
+		//console.log("${tabIndex}");
+		//console.log("${tabInitIndex}");
+		if("${tabIndex}"==0&&"${tabInitIndex}"==0){
+			$(".tab_header a:eq(1)").trigger("click"); // Tab Location
+			$("#tabIndex").val("1");
+		}else{
+			$(".tab_header a:eq(${tabIndex})").trigger("click"); // Tab Location
+			$("#tabIndex").val("${tabIndex}");
+		}
+		var pgmInfo=$.getPgmInfo(location);
+		$("#relatWokCd").val(pgmInfo.relatWokCd);
+		$("#acsAlRngCd").val(12); //  데이타보안관련하여 교수들은 관리자권한(12) 부여
+		$("#yy").inputmask("9999"); // 년도 mask적용
+		//$("#cuslDiary table").tablesorter();  // form영역내에 있는 모든 테이블 정렬
+		$("#tblHisList > tbody").append("<td class=\"ta_c\" colspan=\"5\">조회된 데이터가 없습니다.</td>");
+		$("#dv_lecSubj").hide();
+		$("#lecSubj").selected("${selKeyVal}");
+		$tmpSelVal="${selKeyVal}";
+		var $scrlltblId=null;
+		if($("#tabIndex").val()==0){ // [탭] 상담예약학생 활성화 된경우,
+			$scrlltblId=$("#dvTbody1");
+			$("#yy").enable(true);
+			$("#semCd").enable(true);
+			$(".btn_search").show();
+		}
+		if($("#tabIndex").val()==1){ // [탭] 상담지도학생 활성화 된경우,
+			$scrlltblId=$("#dvTbody2");
+			$("#yy").enable(true);
+			$("#semCd").enable(true);
+			$(".btn_search").show();
+		}
+		if($("#tabIndex").val()==2){ // [탭] 수강학생 활성화 된경우,
+			$("#lecSubj").selected("${selKeyVal}");
+			$("#dv_lecSubj").show();
+			$scrlltblId=$("#dvTbody3");
+			$("#yy").enable(true);
+			$("#semCd").enable(true);
+			$(".btn_search").show();
+		}
+		if($("#tabIndex").val()==3){ // [탭] 학생검색 활성화 된경우,
+			$("#dv_cuslHis").attr("style","display:none"); // 상담이력 div 보이기
+			$scrlltblId=$("#dvTbody4");
+			$("#yy").enable(false);
+			$("#semCd").enable(false);
+			$(".btn_search").hide();
+		}
+		$scrlltblId.addClass("tbody");
+		$scrlltblId.filter(function(){
+			$(this).css("max-height","250px");
+			$(".tbody").niceScroll({
+				touchbehavior:false,
+				cursorborder:"1px solid #C9DEFF;",
+				cursorcolor:"#bcbcbc",
+				cursoropacitymax:0.8,
+				cursorwidth:6,
+				autohidemode:false
+			});
+		});
+		/******************************
+		 * Validate(유효성)
+		 ******************************/
+		// (조회영역) form submit validate
+		$("#cslmSearch").validate({
+			rules:{
+				yy:{
+					required:true
+				},
+				semCd:{
+					required:true
+				},
+				lecSubj:{
+					required:function(){
+						return $("#tabIndex").val()==2?true:false;
+					}
+				},
+				nm:{
+					required:function(){
+						return $("#tabIndex").val()==3?true:false;
+					}
+				}
+			},
+			messages:{
+				yy:{
+					required:"년도는 필수입력값입니다."
+				},
+				semCd:{
+					required:"학기는 필수입력값입니다."
+				},
+				lecSubj:{
+					required:"강의교과목을 선택하세요."
+				},
+				nm:{
+					required:"학생을 선택하세요."
+				}
+			},
+			submitHandler:function(form){
+				$(form).find("[name$=tabIndex]").val($("#tabIndex").val());
+				$(form).find("[name$=yy]").val($("#cuslSearch #yy").val());
+				$(form).find("[name$=semCd]").val($("#cuslSearch #semCd").val());
+				if($("#tabIndex").val()==2){
+					var selected=$("#cslmSearch #lecSubj").find('option:selected');
+					var $dataTag=selected.data('values');
+					$("#cslmSearch").find("[name$=pYy]").val($dataTag.pYy);
+					$("#cslmSearch").find("[name$=pSemCd]").val($dataTag.pSemCd);
+					$("#cslmSearch").find("[name$=pOpOrgid]").val($dataTag.pOpOrgid);
+					$("#cslmSearch").find("[name$=pSubjId]").val($dataTag.pSubjId);
+					$("#cslmSearch").find("[name$=pDvclsNb]").val($dataTag.pDvclsNb);
+					$("#cslmSearch").find("[name$=selKey]").val($("#lecSubj option:selected").val());
+				}
+				form.submit();
+			}
+		});
+		/******************************
+		 * Event(이벤트)
+		 ******************************/
+		// [탭] 클릭이벤트 //start
+		$("#tabs ul").on('click',function(){
+			$("#tblHisList > tbody").empty(); // 상담이력 테이블의 Row를 Clear
+			var $tIdx=$("#tabs").tabs('option','active'); // 선택된 [탭]의 인덱스를 취득
+			$("#dv_hisCnt").find("em").text(0); // 상담이력테이블의 검색결과를 0으로 초기화
+			$(".tr_on").removeClass("tr_on"); // Row선택 CSS 초기화
+			$("#dv_cuslHis").attr("style","display:block"); // 상담이력 div 보이기
+			$("#dv_lecSubj").hide(); // 조회영역의 강의교과목 select element show/hide
+			$("#tblHisList > tbody").append("<td class=\"ta_c\" colspan=\"5\">조회된 데이터가 없습니다.</td>"); // 동적으로 html 추가(탭클릭시 그리드 초기화)
+			$("#yy").enable(true);
+			$("#semCd").enable(true);
+			$(".btn_search").show();
+			var $scrlltblId=null;
+			switch($tIdx){
+				case 0: // [탭] 상담예약학생
+					$("#tabIndex").val($tIdx);
+					$scrlltblId=$("#dvTbody1");
+					break;
+				case 1:
+					$("#tabIndex").val($tIdx);
+					$scrlltblId=$("#dvTbody2");
+					break;
+				case 2:
+					$("#tabIndex").val($tIdx);
+					$("#dv_lecSubj").show();
+					if($tmpSelVal==0){
+						$("#lecSubj").selected("1");
+					}else{
+						$("#lecSubj").selected($tmpSelVal);
+					}
+					$scrlltblId=$("#dvTbody3");
+					break;
+				case 3:
+					$("#tabIndex").val($tIdx);
+					$("#dv_cuslHis").attr("style","display:none"); // 상담이력 div 숨기기
+					$("#yy").enable(false);
+					$("#semCd").enable(false);
+					$(".btn_search").hide();
+					$scrlltblId=$("#dvTbody4");
+					if($("#scregStuid").val()==""){
+						$("#tblUserList > tbody").empty();
+						$("#tblUserList > tbody").append("<td class=\"ta_c\" colspan=\"8\">조회된 데이터가 없습니다.</td>");
+					}
+					break;
+			}
+			// 테이블스크롤 CSS 적용 //start
+			$("#dvTbody1, #dvTbody2, #dvTbody3, #dvTbody4").removeClass();
+			$scrlltblId.addClass("tbody");
+			$scrlltblId.filter(function(){
+				$(this).css("max-height","250px");
+				$(".tbody").niceScroll({
+					touchbehavior:false,
+					cursorborder:"1px solid #C9DEFF;",
+					cursorcolor:"#bcbcbc",
+					cursoropacitymax:0.8,
+					cursorwidth:6,
+					autohidemode:false
+				});
+			});
+			// 테이블스크롤 CSS 적용 //end
+		});
+		// [탭] 클릭이벤트 //end
+		// [탭] 상담예약학생 행클릭 이벤트 //start
+		// [탭] 상담지도학생 행클릭 이벤트 //start
+		// [탭] 상담수강학생 행클릭 이벤트 //start
+		var $t1="table[name$=tblTabs1] tr";
+		var $t2=",table[name$=tblTabs2] tr";
+		var $t3=",table[name$=tblTabs3] tr";
+		$($t1+$t2+$t3).on("click",function(e){
+			if($(this).attr('class')=="empty"){ return false; }
+			// 선택 tr class 적용
+			$(this).addClass("tr_on");
+			$(this).siblings().removeClass();
+			var url="univ/cusl/cslm/findCuslHisList.do";
+			var parameters={
+				stuid:$(this).find("td").eq(1).text()
+			};
+			$.getJSON(url,parameters,function(data){
+				var params=new Array();
+				var hisListTemplate=$.validator.format($.trim($("#hisListTemplate").val()));
+				$("#tblHisList > tbody").empty();
+				$("#dv_hisCnt").find("em").text(data.cuslHisList.length);
+				$.each(data.cuslHisList,function(index,entry){
+					params.push(index+1);
+					params.push(entry.yy);
+					params.push(entry.semCd);
+					params.push(entry.cuslDt);
+					params.push((entry.cuslCont));
+					$(hisListTemplate(params)).appendTo("#tblHisList > tbody");
+					params=[];
+				});
+				if(data.cuslHisList.length==0){
+					$("#tblHisList > tbody").append("<td class=\"ta_c\" colspan=\"5\">조회된 데이터가 없습니다.</td>");
+				}
+			});
+		});
+		// [탭] 상담예약학생 행클릭 이벤트 //end
+		// [탭] 상담지도학생 행클릭 이벤트 //end
+		// [탭] 상담수강학생 행클릭 이벤트 //end
+		// [공통-학생팝업] 학번조회 아이콘 클릭 이벤트 //start
+		$("#srecSchBtn").click(function(e){
+			e.preventDefault();
+			srecPopup(true);
+		});
+		// [공통-학생팝업] 학번조회 아이콘 클릭 이벤트 //end
+		// 조회영역의 학기를 변경시 강의교과목 select box list 구현(ajax 처리) //start
+		$("#cslmSearch #semCd").change(function(){
+			var $ls=$("#lecSubj");
+			var url="univ/cusl/cslm/findLecSubjList.do";
+			var params={
+				"yy":$("#yy").val(),
+				"semCd":$("#semCd").val()
+			};
+			$ls.find("option").remove();
+			$ls.trigger("chosen:updated");
+			$ls.append($("<option>",{
+				value:"",
+				text:"선택"
+			}));
+			$.ajax({
+				type:"post",
+				url:url,
+				async:false,
+				dataType:"json",
+				data:params,
+				success:function(json){
+					$.each(json.lecSubjList,function(i,value){
+						$ls.append($('<option>').text(json.lecSubjList[i].subjNm).attr('value',json.lecSubjList[i].selKey).data("values",{
+							pYy:json.lecSubjList[i].pYy,
+							pSemCd:json.lecSubjList[i].pSemCd,
+							pOpOrgid:json.lecSubjList[i].pOpOrgid,
+							pSubjId:json.lecSubjList[i].pSubjId,
+							pDvclsNb:json.lecSubjList[i].pDvclsNb,
+							tabIndex:2
+						}));
+					});
+					$ls.trigger("chosen:updated");
+				}
+			});
+		});
+		// 조회영역의 학기를 변경시 강의교과목 select box list 구현(ajax 처리) //end
+		// 사용자검색탭의 성명입력필드에서 데이터를 넣고 enter key를 입력하면, 학생정보 팝업을 제공한다.
+		$("#nm").on('keydown',function(e){
+			if(e.keyCode==13){
+				srecPopup(true);
+			}
+		});
+		// 년도의 입력필드에서 데이터를 넣고 enter key를 입력하면, 강의교과목 정보를 가져온다.
+		$("#cslmSearch #yy").on('keydown',function(e){
+			if(e.keyCode==13){
+				$lecSubjAjax();
+			}
+		});
+		// 년도의 입력필드를 벗어나면, 강의교과목 정보를 가져온다.
+		$("#cslmSearch #yy").on('focusout',function(e){
+			$lecSubjAjax();
+		});
+		// 강의교과목 항목을 선택시, 수강생정보를 조회한다.
+		$("#cslmSearch #lecSubj").change(function(){
+		//var selected = $("#cslmSearch #lecSubj").find('option:selected');
+		//var $dataTag = selected.data('values');
+		//$findCuslTlsnAjaxList($dataTag);
+		});
+		// 강의교과목 정보를 가져온다.
+		var $lecSubjAjax=function $lecSubjAjax(){
+			var $ls=$("#lecSubj");
+			var url="univ/cusl/cslm/findLecSubjList.do";
+			var params={
+				"yy":$("#yy").val(),
+				"semCd":$("#semCd").val()
+			};
+			$ls.find("option").remove();
+			$ls.trigger("chosen:updated");
+			$.ajax({
+				type:"post",
+				url:url,
+				async:false,
+				dataType:"json",
+				data:params,
+				success:function(json){
+					$.each(json.lecSubjList,function(i,value){
+						$ls.append($('<option>').text(json.lecSubjList[i].subjNm).attr('value',json.lecSubjList[i].selKey).data("values",{
+							pYy:json.lecSubjList[i].pYy,
+							pSemCd:json.lecSubjList[i].pSemCd,
+							pOpOrgid:json.lecSubjList[i].pOpOrgid,
+							pSubjId:json.lecSubjList[i].pSubjId,
+							pDvclsNb:json.lecSubjList[i].pDvclsNb,
+							tabIndex:2
+						}));
+					});
+					$ls.trigger("chosen:updated");
+				}
+			});
+		};
+		/*
+		// 수강학생정보를 가져온다.
+		var $findCuslTlsnAjaxList = function $findCuslTlsnAjaxList(paramData) {
+
+		    var params  = {
+		         "pYy"      : paramData.pYy
+		        ,"pSemCd"   : paramData.pSemCd
+		        ,"pSubjId"  : paramData.pSubjId
+		        ,"pDvclsNb" : paramData.pDvclsNb
+		        ,"pOpOrgid" : paramData.pOpOrgid
+		    };
+
+		    $.ajax({
+		        type:"post",
+		        url:CONST_TLSN_URL,
+		        async:true,
+		        dataType:"json",
+		        data:params,
+		        success: function(data) {
+		            $.each(data.cuslTlsnList, function(index, entry) {
+		                var $paramData = new Array();
+		                var tlsnListTemplate = $.validator.format($.trim($("#tlsnListTemplate").val()));
+
+		                $("#tblTlsnList > tbody").empty();
+		                $("#dvTbody3").removeClass();
+
+		                $.each(data.cuslTlsnList, function(index, entry) {
+
+		                   $paramData.push(index+1);
+		                   $paramData.push(entry.yy);
+		                   $paramData.push(entry.semCd);
+		                   $paramData.push(entry.stuid);
+		                   $paramData.push(entry.nm);
+		                   $paramData.push(entry.schgr);
+		                   $paramData.push(entry.pstnOrgzNm);
+		                   $paramData.push(entry.curSemCuslCnt);
+		                   $paramData.push(entry.cuslStudYn);
+		                   $paramData.push(entry.abeekYn);
+
+		                   $(tlsnListTemplate($paramData)).appendTo("#tblTlsnList > tbody");
+		                   $paramData = [];
+
+		                });
+
+		                if(data.cuslTlsnList.length == 0) {
+		                    $("#tblTlsnList > tbody").append("<td class=\"ta_c\" colspan=\"8\">조회된 데이터가 없습니다.</td>");
+		                }
+
+		                $("#dvTbody3").addClass("tbody");
+
+		                $("#dv_tlsnCnt").find("em").text(data.cuslTlsnList.length);
+
+		            });
+		        }
+		    });
+		};
+		 */
+		// Ajax 파일 다운로드
+		$.cuslDownload=function(url,data,method){
+			// url과 data를 입력받음
+			if(url&&data){
+				// data 는  string 또는 array/object 를 파라미터로 받는다.
+				data=typeof data=='string'?data:jQuery.param(data);
+				// 파라미터를 form의  input으로 만든다.
+				var inputs='';
+				$.each(data.split('&'),function(){
+					var pair=this.split('=');
+					inputs+='<input type="hidden" name="'+ pair[0] +'" value="'+ pair[1] +'" />';
+				});
+				// request를 보낸다.
+				$('<form action="'+url+'" method="'+(method||'post')+'">'+inputs+'</form>').appendTo('body').submit().remove();
+			};
+		};
+		// 수강학생 엑셀버튼클릭
+		$("#tlsnXslBtn").on('click',function(){
+			var selected=$("#cslmSearch #lecSubj").find('option:selected');
+			var $dataTag=selected.data('values');
+			var pYy=$dataTag.pYy;
+			var pSemCd=$dataTag.pSemCd;
+			var pOpOrgid=$dataTag.pOpOrgid;
+			var pSubjId=$dataTag.pSubjId;
+			var pDvclsNb=$dataTag.pDvclsNb;
+			//var excelFileNm = $('#tab-3 table:first').find("caption").text();
+			var excelFileNm="cuslTlsn";
+			//$('**.pftable**').find("caption").text(selValue);
+			// 폼을 동적으로 그리고 submit한 후 폼을 remove한다.
+			$.cuslDownload('univ/cusl/cslm/cuslTlsnDwExcelFile.do' // url
+			,'pYy='+pYy+'&pSemCd='+pSemCd+'&pOpOrgid='+pOpOrgid+'&pSubjId='+pSubjId+'&pDvclsNb='+pDvclsNb+'&excelFileNm='+excelFileNm // 파라메터
+			,'post'); // 전송방식
+		});
+		// 상담지도학생 엑셀버튼클릭
+		$("#coachXslBtn").on('click',function(){
+			var excelFileNm="cuslCoach";
+			// 폼을 동적으로 그리고 submit한 후 폼을 remove한다.
+			$.cuslDownload('univ/cusl/cslm/cuslCoachDwExcelFile.do' // url
+			,'yy='+$("#cslmSearch #yy").val()+'&semCd='+$("#cslmSearch #semCd").val()+'&excelFileNm='+excelFileNm // 파라메터
+			,'post'); // 전송방식
+		});
+	});
+</script>
+<div class="tabs tabs_type03 cusl_wrap">
+	<ul class="slice03 line_blue">
+		<li>
+			<a href="#tabs1">상담예약학생</a>
+		</li>
+		<li>
+			<a href="#tabs2">상담지도학생</a>
+		</li>
+		<li>
+			<a href="#tabs3">수강학생</a>
+		</li>
+	</ul>
+	<div class="search_wrap">
+		<ul>
+			<li>
+				<div class="f_l w_49 mr_5">
+					<span class="form_select">
+						<select name="" id="" title="년도선택">
+							<option value="">2015</option>
+						</select>
+					</span>
+				</div>
+				<div>
+					<span class="form_select">
+						<select name="" id="" title="학기선택">
+							<option value="">1학기</option>
+						</select>
+					</span>
+				</div>
+			</li>
+			<li>
+				<span class="form_select">
+					<select name="" id="" title="수강과목">
+						<option value="">수강과목</option>
+					</select>
+				</span>
+			</li>
+			<li>
+				<a href="#" class="btn gray02">SEARCH</a>
+			</li>
+		</ul>
+	</div>
+	<div id="tabs1">
+		<div class="group">
+			<div class="tit_group">
+				<h3>학생리스트</h3>
+				<strong class="num_result">
+					[검색결과
+					<span>6</span>
+					건]
+				</strong>
+			</div>
+			<div class="tbl_line tbl_round">
+				<div class="tbl_dsp">
+					<div class="cell_mid w_40">
+						<strong class="fs_13 fc_org">[학번 321011212]</strong>
+						<br />
+						<strong class="fs_18 fw_bb">강동욱</strong>
+					</div>
+					<ul class="list_line reset">
+						<li>
+							<span>소속</span>
+							<em>공과대학 토목환경공학과</em>
+						</li>
+						<li>
+							<span>현재학기상담횟수</span>
+							<em>0</em>
+						</li>
+						<li>
+							<span>공학인증</span>
+							<em>전문</em>
+						</li>
+						<li>
+							<span>휴대폰 번호</span>
+							<em class="fs_13 fc_blue">010-0000-0000</em>
+						</li>
+					</ul>
+				</div>
+				<div class="btn_wrap">
+					<a href="#" class="btn white f_l w_49">상담이력</a>
+					<a href="#" class="btn blue">상담입력</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="tabs2">
+		<div class="group">
+			<div class="tit_group">
+				<h3>학생리스트</h3>
+				<strong class="num_result">
+					[검색결과
+					<span>6</span>
+					건]
+				</strong>
+			</div>
+			<div class="tbl_line tbl_round">
+				<div class="tbl_dsp">
+					<div class="cell_mid w_40">
+						<strong class="fs_13 fc_org">[학번 321011212]</strong>
+						<br />
+						<strong class="fs_18 fw_bb">강동욱</strong>
+					</div>
+					<ul class="list_line reset">
+						<li>
+							<span>소속</span>
+							<em>공과대학 토목환경공학과</em>
+						</li>
+						<li>
+							<span>현재학기상담횟수</span>
+							<em>0</em>
+						</li>
+						<li>
+							<span>공학인증</span>
+							<em>전문</em>
+						</li>
+						<li>
+							<span>휴대폰 번호</span>
+							<em class="fs_13 fc_blue">010-0000-0000</em>
+						</li>
+					</ul>
+				</div>
+				<div class="btn_wrap">
+					<a href="#" class="btn white f_l w_49">상담이력</a>
+					<a href="#" class="btn blue">상담입력</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="tabs3">
+		<div class="group">
+			<div class="tit_group">
+				<h3>학생리스트</h3>
+				<strong class="num_result">
+					[검색결과
+					<span>6</span>
+					건]
+				</strong>
+			</div>
+			<div class="tbl_line tbl_round">
+				<div class="tbl_dsp">
+					<div class="cell_mid w_40">
+						<strong class="fs_13">[학번 321011212]</strong>
+						<br />
+						<strong class="fs_18 fc_org fw_bb">강동욱</strong>
+					</div>
+					<ul class="list_line reset">
+						<li>
+							<span>소속</span>
+							<em>공과대학 토목환경공학과</em>
+						</li>
+						<li>
+							<span>현재학기상담횟수</span>
+							<em>0</em>
+						</li>
+						<li>
+							<span>공학인증</span>
+							<em>전문</em>
+						</li>
+						<li>
+							<span>휴대폰 번호</span>
+							<em class="fs_13 fc_blue">010-0000-0000</em>
+						</li>
+					</ul>
+				</div>
+				<div class="btn_wrap">
+					<a href="#" class="btn white f_l w_49">상담이력</a>
+					<a href="#" class="btn blue">상담입력</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 상담학생조회 영역 //start -->
+<form:form modelAttribute="cslmSearch" method="post" class="form-inline" data-role="search" data-message="alert">
+	<input type="hidden" id="tabIndex" name="tabIndex" value="">
+	<input type="hidden" id="pDvclsNb" name="pDvclsNb" value="">
+	<input type="hidden" id="pSubjId" name="pSubjId" value="">
+	<input type="hidden" id="pOpOrgid" name="pOpOrgid" value="">
+	<input type="hidden" id="pYy" name="pYy" value="">
+	<input type="hidden" id="pSemCd" name="pSemCd" value="">
+	<input type="hidden" id="selKey" name="selKey" value="">
+	<div class="tbl_search">
+		<table id="tbl_s">
+			<caption>검색테이블</caption>
+			<colgroup>
+				<col style="width: 12%;" />
+				<col style="width: 15%;" />
+				<col style="width: *%;" />
+				<col />
+				<col style="width: 120px;" />
+			</colgroup>
+			<tbody>
+				<tr>
+					<td>
+						<div class="form_text form_required">
+							<form:input path="yy" placeholder="년도" data-inputmask-clearmaskonlostfocus="false" />
+						</div>
+					</td>
+					<td>
+						<div class="form_select form_required ">
+							<form:select path="semCd" class="chosen-select" data-placeholder="학기">
+								<option value="">학기</option>
+								<form:options items="${semCdList}" itemValue="cmnCdval" itemLabel="cmnCdvalNm" />
+							</form:select>
+						</div>
+					</td>
+					<td>
+						<div id="dv_lecSubj" class="form_select form_required">
+							<select id="lecSubj" name="lecSubj" class="chosen-select" data-placeholder="강의교과목">
+								<c:forEach var="list" items="${lecSubjList}" varStatus="loop">
+									<option value="${list.selKey}" data-values='{ "pYy": "${list.pYy}", "pSemCd": "${list.pSemCd}" , "pOpOrgid": "${list.pOpOrgid}" , "pSubjId": "${list.pSubjId}" , "tabIndex": 2 , "pDvclsNb": "${list.pDvclsNb}"}'>${list.subjNm}</option>
+								</c:forEach>
+							</select>
+						</div>
+					</td>
+					<td></td>
+					<td class="search_td">
+						<button class="btn_search">
+							<strong>
+								<span>
+									<img src="images/btn/btn_serach.png" alt="SEARCH" />
+								</span>
+							</strong>
+						</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</form:form>
+<!-- 상담학생조회 영역 //end -->
+<!-- form //start -->
+<form:form modelAttribute="cuslDiary">
+	<input type="hidden" name="status" id="status" value="">
+	<input type="hidden" id="relatWokCd" name="relatWokCd">
+	<input type="hidden" id="acsAlRngCd" name="acsAlRngCd" value="12">
+	<!-- 탭영역 //start -->
+	<div id="tabs" class="tabs">
+		<div class="tab_header_box">
+			<ul class="tab_header f_l">
+				<!-- 오른쪽에 버튼 있을때 f_l 추가 -->
+				<c:if test="${requestScope['javax.servlet.forward.query_string'] != null}">
+					<c:set var="questionMark" value="?" />
+				</c:if>
+				<li>
+					<a href="${requestScope['javax.servlet.forward.request_uri']}${questionMark}${requestScope['javax.servlet.forward.query_string']}#tab-1">상담예약학생</a>
+				</li>
+				<li>
+					<a href="${requestScope['javax.servlet.forward.request_uri']}${questionMark}${requestScope['javax.servlet.forward.query_string']}#tab-2">상담지도학생</a>
+				</li>
+				<li>
+					<a href="${requestScope['javax.servlet.forward.request_uri']}${questionMark}${requestScope['javax.servlet.forward.query_string']}#tab-3">수강학생</a>
+				</li>
+				<li>
+					<a href="${requestScope['javax.servlet.forward.request_uri']}${questionMark}${requestScope['javax.servlet.forward.query_string']}#tab-4">학생검색</a>
+				</li>
+			</ul>
+		</div>
+		<!-- [탭]상담예약학생 //start -->
+		<div class="tab_cont" id="tab-1">
+			<div class="section_tbl">
+				<div class="section_mid_tit">
+					<h4 class="tit_mid">상담예약학생</h4>
+					<p class="txt_number f_r">
+						검색결과는 [ <em class="fc_orange"> ${fn:length(cuslResvList)} 건</em> ] 입니다.
+					</p>
+				</div>
+				<div class="tbl_column">
+					<table>
+						<caption>상담예약학생</caption>
+						<colgroup>
+							<col style="width: 5%;" />
+							<col style="width: 12%;" />
+							<col style="width: 12%;" />
+							<col style="width: 12%;" />
+							<col style="width: 12%;" />
+							<col style="width: 12%;" />
+							<col style="width: 12%;" />
+						</colgroup>
+						<thead>
+							<tr class="tablesorter-headerRow" role="row">
+								<th scope="col" data-sorter="false">#</th>
+								<th scope="col">학번</th>
+								<th scope="col">성명</th>
+								<th scope="col">상담희망일자</th>
+								<th scope="col">지도학생여부</th>
+								<th scope="col">공학인증</th>
+								<th scope="col">최근학사경고</th>
+							</tr>
+						</thead>
+					</table>
+					<div id="dvTbody1" class="">
+						<table id="tblResvList" class="tbl_mixed tbl_click" name="tblTabs1">
+							<caption>상담예약학생</caption>
+							<colgroup>
+								<col style="width: 5%;" />
+								<col style="width: 12%;" />
+								<col style="width: 12%;" />
+								<col style="width: 12%;" />
+								<col style="width: 12%;" />
+								<col style="width: 12%;" />
+								<col style="width: 12%;" />
+							</colgroup>
+							<tbody>
+								<c:choose>
+									<c:when test="${!empty cuslResvList}">
+										<c:forEach var="cuslResvList" items="${cuslResvList}" varStatus="loop">
+											<tr>
+												<td class="left_line ta_c numbering">
+													${loop.count}
+													<input name="h_cuslSeq" id="h_cuslSeq" type="hidden" value="${cuslResvList.cuslSeq}" />
+												</td>
+												<td class="ta_c">
+													<a href="univ/cusl/cslm/views/findCounslInptForm.do?stuid=${cuslResvList.stuid}&yy=${cslmSearch.yy}&semCd=${cslmSearch.semCd}&tabIndex=1&callPageGbn=cuslInput&pTabIndex=0&selKey=${selKeyVal}&pSubjId=${selPsubjId}&pOpOrgid=${selPopOrgid}&pDvclsNb=${selPdvclsNb}" data-method="post">
+														<c:out value="${cuslResvList.stuid}" escapeXml="true" />
+													</a>
+												</td>
+												<td class="ta_c">${cuslResvList.nm}</td>
+												<td class="ta_c">${cuslResvList.cuslHopeDt}</td>
+												<td class="ta_c">${cuslResvList.cuslStudYn}</td>
+												<td class="ta_l">${cuslResvList.abeekYn}</td>
+												<td class="ta_C">${cuslResvList.yySemCd}</td>
+											</tr>
+										</c:forEach>
+									</c:when>
+									<c:otherwise>
+										<tr class="empty">
+											<td class="ta_c" colspan="7">조회된 데이터가 없습니다.</td>
+										</tr>
+									</c:otherwise>
+								</c:choose>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- [탭]상담예약학생 //end -->
+		<!-- [탭]상담지도학생 //start -->
+		<div class="tab_cont" id="tab-2">
+			<div class="section_tbl">
+				<div class="section_mid_tit">
+					<h4 class="tit_mid">상담지도학생</h4>
+					<p class="txt_number f_r">
+						검색결과는 [ <em class="fc_orange"> ${fn:length(cuslCoachList)} 건</em> ] 입니다.
+					</p>
+				</div>
+				<div class="tbl_column">
+					<table>
+						<caption>상담지도학생</caption>
+						<colgroup>
+							<col style="width: 5%;" />
+							<col style="width: 8%;" />
+							<col style="width: 7%;" />
+							<col style="width: 5%;" />
+							<col style="width: 17%;" />
+							<col style="width: 8%;" />
+							<col style="width: 10%;" />
+							<col style="width: 10%;" />
+							<col style="width: *%;" />
+							<col style="width: 10%;" />
+						</colgroup>
+						<thead>
+							<tr class="tablesorter-headerRow" role="row">
+								<th scope="col" data-sorter="false">#</th>
+								<th scope="col">학번</th>
+								<th scope="col">성명</th>
+								<th scope="col">학년</th>
+								<th scope="col">소속</th>
+								<th scope="col">
+									현재학기<br />상담횟수
+								</th>
+								<th scope="col">공학인증</th>
+								<th scope="col">최근학사경고</th>
+								<th scope="col">Email</th>
+								<th scope="col">휴대폰번호</th>
+							</tr>
+						</thead>
+					</table>
+					<div id="dvTbody2" class="">
+						<table id="tblCoachList" class="tbl_mixed tbl_click" name="tblTabs2">
+							<caption>상담지도학생</caption>
+							<colgroup>
+								<col style="width: 5%;" />
+								<col style="width: 8%;" />
+								<col style="width: 7%;" />
+								<col style="width: 5%;" />
+								<col style="width: 17%;" />
+								<col style="width: 8%;" />
+								<col style="width: 10%;" />
+								<col style="width: 10%;" />
+								<col style="width: *%;" />
+								<col style="width: 10%;" />
+							</colgroup>
+							<tbody>
+								<c:choose>
+									<c:when test="${!empty cuslCoachList}">
+										<c:forEach var="cuslCoachList" items="${cuslCoachList}" varStatus="loop">
+											<tr>
+												<td class="left_line ta_c numbering">${loop.count}</td>
+												<td class="ta_c">
+													<a href="univ/cusl/cslm/views/findCounslInptForm.do?stuid=${cuslCoachList.stuid}&yy=${cslmSearch.yy}&semCd=${cslmSearch.semCd}&tabIndex=1&callPageGbn=cuslInput&pTabIndex=1&selKey=${selKeyVal}&pSubjId=${selPsubjId}&pOpOrgid=${selPopOrgid}&pDvclsNb=${selPdvclsNb}" data-method="post">
+														<c:out value="${cuslCoachList.stuid}" escapeXml="true" />
+													</a>
+												</td>
+												<td class="ta_c">${cuslCoachList.nm}</td>
+												<td class="ta_c">${cuslCoachList.schgr}</td>
+												<td class="ta_l">${cuslCoachList.pstnOrgzNm}</td>
+												<td class="ta_c">${cuslCoachList.curSemCuslCnt}</td>
+												<td class="ta_c">${cuslCoachList.abeekYn}</td>
+												<td class="ta_c">${cuslCoachList.yySemCd}</td>
+												<td class="ta_l">${cuslCoachList.eml}</td>
+												<td class="ta_l">${cuslCoachList.mpTelno}</td>
+											</tr>
+										</c:forEach>
+									</c:when>
+									<c:otherwise>
+										<tr class="empty">
+											<td class="ta_c" colspan="10">조회된 데이터가 없습니다.</td>
+										</tr>
+									</c:otherwise>
+								</c:choose>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<br />
+				<!-- 섹션 버튼 -->
+				<div class="section_btn">
+					<div class="f_r">
+						<ui:button type="button" name="coachXslBtn" text="엑셀 다운로드" className="btn_basic" enabled="true" role="ED" />
+					</div>
+					<!-- 비트랜젝션 -->
+				</div>
+				<!-- //섹션 버튼 -->
+			</div>
+		</div>
+		<!-- [탭]상담지도학생 //end -->
+		<!-- [탭]수강학생 //start -->
+		<div class="tab_cont" id="tab-3">
+			<div class="section_tbl">
+				<div class="section_mid_tit">
+					<h4 class="tit_mid">수강학생</h4>
+					<p class="txt_number f_r">
+						검색결과는 [ <em class="fc_orange"> ${fn:length(cuslTlsnList)} 건</em> ] 입니다.
+					</p>
+				</div>
+				<div class="tbl_column">
+					<table id="ltadTbl" class="tbl_mixed">
+						<caption>수강학생</caption>
+						<colgroup>
+							<col style="width: 5%;" />
+							<col style="width: 8%;" />
+							<col style="width: 7%;" />
+							<col style="width: 5%;" />
+							<col style="width: 17%;" />
+							<col style="width: 8%;" />
+							<col style="width: 10%;" />
+							<col style="width: 10%;" />
+							<col style="width: *%;" />
+							<col style="width: 10%;" />
+						</colgroup>
+						<thead>
+							<tr class="tablesorter-headerRow" role="row">
+								<th scope="col" data-sorter="false">#</th>
+								<th scope="col">학번</th>
+								<th scope="col">성명</th>
+								<th scope="col">학년</th>
+								<th scope="col">소속</th>
+								<th scope="col">
+									현재학기<br />상담횟수
+								</th>
+								<th scope="col">지도학생여부</th>
+								<th scope="col">공학인증</th>
+								<th scope="col">Email</th>
+								<th scope="col">휴대폰번호</th>
+							</tr>
+						</thead>
+					</table>
+					<div id="dvTbody3" class="">
+						<table id="tblTlsnList" class="tbl_mixed tbl_click" name="tblTabs3">
+							<caption>수강학생</caption>
+							<colgroup>
+								<col style="width: 5%;" />
+								<col style="width: 8%;" />
+								<col style="width: 7%;" />
+								<col style="width: 5%;" />
+								<col style="width: 17%;" />
+								<col style="width: 8%;" />
+								<col style="width: 10%;" />
+								<col style="width: 10%;" />
+								<col style="width: *%;" />
+								<col style="width: 10%;" />
+							</colgroup>
+							<tbody>
+								<c:choose>
+									<c:when test="${!empty cuslTlsnList}">
+										<c:forEach var="cuslTlsnList" items="${cuslTlsnList}" varStatus="loop">
+											<tr>
+												<td class="left_line ta_c numbering">${loop.count}</td>
+												<td class="ta_c">
+													<a href="univ/cusl/cslm/views/findCounslInptForm.do?stuid=${cuslTlsnList.stuid}&yy=${cslmSearch.yy}&semCd=${cslmSearch.semCd}&tabIndex=1&callPageGbn=cuslInput&pTabIndex=2&selKey=${selKeyVal}&pSubjId=${selPsubjId}&pOpOrgid=${selPopOrgid}&pDvclsNb=${selPdvclsNb}" data-method="post">
+														<c:out value="${cuslTlsnList.stuid}" escapeXml="true" />
+													</a>
+												</td>
+												<td class="ta_c">${cuslTlsnList.nm}</td>
+												<td class="ta_c">${cuslTlsnList.schgr}</td>
+												<td class="ta_l">${cuslTlsnList.pstnOrgzNm}</td>
+												<td class="ta_c">${cuslTlsnList.curSemCuslCnt}</td>
+												<td class="ta_c">${cuslTlsnList.cuslStudYn}</td>
+												<td class="ta_c">${cuslTlsnList.abeekYn}</td>
+												<td class="ta_l">${cuslTlsnList.eml}</td>
+												<td class="ta_l">${cuslTlsnList.mpTelno}</td>
+											</tr>
+										</c:forEach>
+									</c:when>
+									<c:otherwise>
+										<tr class="empty">
+											<td class="ta_c" colspan="10">조회된 데이터가 없습니다.</td>
+										</tr>
+									</c:otherwise>
+								</c:choose>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<br />
+			<!-- 섹션 버튼 -->
+			<div class="section_btn">
+				<div class="f_r">
+					<ui:button type="button" name="tlsnXslBtn" text="엑셀 다운로드" className="btn_basic" enabled="true" role="ED" />
+				</div>
+				<!-- 비트랜젝션 -->
+			</div>
+			<!-- //섹션 버튼 -->
+		</div>
+		<!-- [탭]수강학생 //end -->
+		<!-- [탭]학생검색 //start -->
+		<div class="tab_cont" id="tab-4">
+			<!-- 학번검색 //start -->
+			<div class="form_inline" style="padding: 3px 0px 0px 5px;">
+				<div class="form_text w_90_pix f_l">
+					<input type="text" id="nm" name="nm" placeholder="성명/학번" title="성명/학번">
+					<input type="text" id="stuid" name="stuid" style="display: none; border: none; border-color: transparent;">
+					<a href="#" id="srecSchBtn" class="ico_find">
+						<span class="blind">찾기</span>
+					</a>
+				</div>
+				<div class="f_l" style="padding: 6px 5px 0px 0px; color: red;">※ 검색할 학번 또는 성명을 입력하시기 바랍니다.</div>
+				<br />
+			</div>
+			<!-- 학번검색 //end -->
+			<div class="section_tbl">
+				<div class="section_mid_tit" id="dv_studCnt">
+					<h4 class="tit_mid">검색결과</h4>
+					<p class="txt_number f_r">
+						검색결과는 [ <em class="fc_orange"> ${fn:length(cuslUserList)} 건</em> ] 입니다.
+					</p>
+				</div>
+				<div class="tbl_column">
+					<table>
+						<caption>학생검색</caption>
+						<colgroup>
+							<col style="width: 5%;" />
+							<col style="width: 10%;" />
+							<col style="width: 8%;" />
+							<col style="width: 8%;" />
+							<col style="width: *%;" />
+							<col style="width: 8%;" />
+							<col style="width: 10%;" />
+							<col style="width: 12%;" />
+						</colgroup>
+						<thead>
+							<tr class="tablesorter-headerRow" role="row">
+								<th scope="col" data-sorter="false">#</th>
+								<th scope="col">학번</th>
+								<th scope="col">성명</th>
+								<th scope="col">학년</th>
+								<th scope="col">소속</th>
+								<th scope="col">
+									현재학기<br />상담횟수
+								</th>
+								<th scope="col">공학인증</th>
+								<th scope="col">최근학사경고</th>
+							</tr>
+						</thead>
+					</table>
+					<div id="dvTbody4" class="">
+						<table id="tblUserList" name="tblUserList" class="tbl_mixed tbl_click">
+							<caption>학생검색</caption>
+							<colgroup>
+								<col style="width: 5%;" />
+								<col style="width: 10%;" />
+								<col style="width: 8%;" />
+								<col style="width: 8%;" />
+								<col style="width: *%;" />
+								<col style="width: 8%;" />
+								<col style="width: 10%;" />
+								<col style="width: 12%;" />
+							</colgroup>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<textarea id="studListTemplate" style="display: none">
+            <tr>
+              <td class="left_line ta_c numbering">{0}</td>
+             <td class="ta_c">
+                <a href="univ/cusl/cslm/views/findCounslInptForm.do?stuid={3}&yy={1}&semCd={2}&tabIndex=1&callPageGbn=cuslInput&pTabIndex=0&selKey=${selKeyVal}&pSubjId=${selPsubjId}&pOpOrgid=${selPopOrgid}&pDvclsNb=${selPdvclsNb}" data-method="post">
+                     <c:out value="{3}" escapeXml="true" />
+                </a>
+             </td>
+             <td class="ta_c">{4}</td>
+             <td class="ta_c">{5}</td>
+             <td class="ta_l">{6}</td>
+             <td class="ta_c">{7}</td>
+             <td class="ta_c">{8}</td>
+             <td class="ta_c">{9}</td>
+            </tr>
+        </textarea>
+			</div>
+			<!-- 학적기본정보 //start -->
+			<div class="section_tbl">
+				<div class="section_mid_tit">
+					<h4 class="tit_mid">학생기본정보</h4>
+				</div>
+				<!-- 개인정보 -->
+				<div class="section_tbl section_profile">
+					<div class="group_photo">
+						<p class="photo"></p>
+					</div>
+					<div class="group_profile">
+						<div class="tbl_row">
+							<table id="tblScreg">
+								<caption>학생기본정보</caption>
+								<tbody>
+									<tr>
+										<th scope="row" width="65px;">학번</th>
+										<td>
+											<div class="form_text" style="border: none; border-color: transparent;">
+												<span id="scregStuid" name="scregStuid"></span>
+												<input type="hidden" name="zipcd" id="zipcd" value="${stuInfo.zipcd}" readonly>
+												<input type="hidden" name="addr" id="addr" value="${stuInfo.addr}" readonly>
+												<input type="hidden" name="detAddr" id="detAddr" value="${stuInfo.detAddr}" readonly>
+												<input type="hidden" name="dsbtTyCd " id="dsbtTyCd" value="${stuInfo.dsbtTyCd}" readonly>
+												<input type="hidden" name="dsbtRatCd" id="dsbtRatCd" value="${stuInfo.dsbtRatCd}" readonly>
+											</div>
+										</td>
+										<th scope="row" width="65px;">학적상태</th>
+										<td>
+											<div class="form_text" style="border: none; border-color: transparent;">
+												<span id="scregStaNm" name="scregStaNm"></span>
+											</div>
+										</td>
+										<th scope="row" width="65px;">학적변동</th>
+										<td colspan="5">
+											<div class="form_text" style="border: none; border-color: transparent;">
+												<span id="scregModStaNm" name="scregModStaNm"></span>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th scope="row">성명(한글)</th>
+										<td colspan="3">
+											<div class="form_text" style="border: none; border-color: transparent;">
+												<span id="koNm" name="koNm"></span>
+											</div>
+										</td>
+										<th scope="row">소속</th>
+										<td colspan="5">
+											<div class="form_text" style="border: none; border-color: transparent;">
+												<span id="pstnOrgzNm" name="pstnOrgzNm"></span>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th scope="row">성명(영문)</th>
+										<td colspan="3">
+											<div class="form_text" style="border: none; border-color: transparent;">
+												<span id="egnm" name="egnm"></span>
+											</div>
+										</td>
+										<th scope="row">학위과정</th>
+										<td>
+											<div class="form_text" style="border: none; border-color: transparent;">
+												<span id="dgreCrsNm" name="dgreCrsNm"></span>
+											</div>
+										</td>
+										<th scope="row" width="35px;">학년</th>
+										<td>
+											<div class="form_text" style="border: none; border-color: transparent;">
+												<span id="schgr" name="schgr"></span>
+											</div>
+										</td>
+										<th scope="row" style="width: 65px;">학기</th>
+										<td>
+											<div class="form_text" style="border: none; border-color: transparent;">
+												<span id="semNm" name="semNm"></span>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th scope="row">성명(한자)</th>
+										<td colspan="3">
+											<div class="form_text" style="border: none; border-color: transparent;">
+												<span id="chnm" name="chnm"></span>
+											</div>
+										</td>
+										<th scope="row">국적</th>
+										<td>
+											<div class="form_text" style="border: none; border-color: transparent;">
+												<span id="cntyNm" name="cntyNm"></span>
+											</div>
+										</td>
+										<th scope="row">등록</th>
+										<td>
+											<div class="form_text" style="border: none; border-color: transparent;">
+												<span id="regsSemCnt" name="regsSemCnt"></span>
+											</div>
+										</td>
+										<th scope="row">이수학기</th>
+										<td>
+											<div class="form_text" style="border: none; border-color: transparent;">
+												<span id="complSemCnt" name="complSemCnt"></span>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th scope="row">주민번호</th>
+										<td colspan="3">
+											<div class="form_text" style="border: none; border-color: transparent;">
+												<span id="resno" name="resno"></span>
+											</div>
+										</td>
+										<th scope="row">생년월일</th>
+										<td>
+											<div class="form_text" style="border: none; border-color: transparent;">
+												<span id="bday" name="bday"></span>
+											</div>
+										</td>
+										<th scope="row">성별</th>
+										<td colspan="3">
+											<div class="form_text" style="border: none; border-color: transparent;">
+												<span id="sexNm" name="sexNm"></span>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 학적기본정보 //end -->
+		</div>
+		<!-- [탭]학생검색 //end -->
+	</div>
+	<!-- 탭영역 //start -->
+	<!-- 상담이력 //start -->
+	<div id="dv_cuslHis" class="section_tbl" style="display: block">
+		<div class="section_mid_tit" id="dv_hisCnt">
+			<h4 class="tit_mid">상담이력</h4>
+			<p class="txt_number f_r">
+				검색결과는 [ <em class="fc_orange"> ${fn:length(cuslHisList)} 건</em> ] 입니다.
+			</p>
+		</div>
+		<div class="tbl_column">
+			<table id="tblHisList" class="tbl_mixed">
+				<caption>상담이력</caption>
+				<colgroup>
+					<col style="width: 5%;" />
+					<col style="width: 8%;" />
+					<col style="width: 8%;" />
+					<col style="width: 12%;" />
+					<col style="width: *%;" />
+				</colgroup>
+				<thead>
+					<tr class="tablesorter-headerRow" role="row">
+						<th scope="col" data-sorter="false">#</th>
+						<th scope="col">년도</th>
+						<th scope="col">학기</th>
+						<th scope="col">상담일자</th>
+						<th scope="col">상담내용</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<!-- 상담이력 //end -->
+</form:form>
+<!-- form //end -->
+<!-- 삼담이력 Template //start -->
+<textarea id="hisListTemplate" style="display: none">
+  <tr>
+    <td class="ta_c">{0}</td>
+    <td class="ta_c">{1}</td>
+    <td class="ta_c">{2}</td>
+    <td class="ta_c">{3}</td>
+    <td class="ta_l">
+			<span class="txt_overflow">{4}</span>
+		</td>
+  </tr>
+</textarea>
+<!-- 삼담이력 Template //end -->

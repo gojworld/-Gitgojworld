@@ -1,0 +1,234 @@
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ include file="/WEB-INF/includes/taglibs.jsp"%>
+<script type="text/javascript">
+	var _self={
+		"page":1,
+		"pageSync":true,
+		'template':null,
+		category:{
+			"죽전":"blue",
+			"천안":"green",
+			"공통":"gray",
+		},
+		"list":function(){
+			$.ajax({
+				type:"post",
+				url:"vocm/findAudtListJson.do",
+				async:true,
+				dataType:"json",
+				data:{
+					"currentPageNo":_self.page,
+				},
+				success:function(data){
+					console.log(data);
+					var $listUl=$("#appendList");
+					if(data.recvList.length==10){
+						_self.pageSync=true;
+					}
+					$.each(data.recvList,function(index,entry){
+						$.extend(entry,{
+							"color":_self.category[entry.vocCampNm],
+						});
+						$listUl.addRow(_self.template,entry);
+					});
+				}
+			});
+		}
+	};
+	$(document).ready(function(){
+		_self.template=$("#scrollMoreTpl").html();
+		_self.pageSync=$("#appendList").length>0;
+		$(function(){
+			$(window).scroll(function(){
+				if($(window).scrollTop()>=$(document).height()-$(window).height()&&_self.pageSync){
+					_self.page++;
+					_self.pageSync=false;
+					_self.list();
+				}
+			});
+			$(window).bind('mousewheel',function(event){
+				if(event.originalEvent.wheelDelta<=0&&$(document).height()-$(window).height()==0&&_self.pageSync){
+					_self.page++;
+					_self.pageSync=false;
+					_self.list();
+				}
+			});
+		});
+		var category={
+			"죽전":"blue",
+			"천안":"green",
+			"공통":"gray"
+		};
+		var url="vocm/findAudtDetail.do";
+		var $audtInfoTemplate=$("#audt_info_template").clone();
+		var params;
+		$("#audt_info_template").remove();
+		$("#appendList").on("click",".txt_more a",function(e){
+			e.preventDefault();
+			params=$(this).data("params");
+			if(params.scrtWrtiYn=='1'&&params.wrirId!="${userDetails.intgUid}"){
+				alert("비밀글입니다.");
+				return false;
+			}
+			$.getJSON(url,params,function(data){
+				if(data.recv){
+					var $audtInfo=$audtInfoTemplate.clone();
+					if(!data.attachFile) $audtInfo.find(".file_download").remove();
+					$audtInfo.bindParams($.extend(data.recv,{
+						"color":category[data.recv.vocCampNm],
+						"fileNm":data.attachFile?data.attachFile.fileNm:"",
+						"fileSeq":data.attachFile?data.attachFile.fileSeq:"",
+						"fileCdval":data.attachFile?data.attachFile.fileCdval:""
+					})).layout({
+						"title":"칭찬불친절 상세보기"
+					});
+				}
+			});
+		});
+	});
+</script>
+<div class="voc_wrap">
+	<form:form modelAttribute="vocmWebSearch" method="post" class="form-inline" data-role="search" data-message="alert" action="vocm/findAudtList.do">
+		<div class="search_wrap">
+			<ul>
+				<li>
+					<span class="form_select">
+						<form:select path="vocCampCd" class="chosen-select">
+							<option value="">전체</option>
+							<form:options items="${vocCampCdList}" itemValue="cmnCdval" itemLabel="cmnCdvalNm" />
+							<input type="hidden" id="flag" name="flag" value="${vocmWebSearch.flag}" />
+						</form:select>
+					</span>
+				</li>
+				<li>
+					<button class="btn gray02">SEARCH</button>
+				</li>
+			</ul>
+		</div>
+	</form:form>
+	<div class="group">
+		<div class="tit_group">
+			<h3>
+				검색 결과
+				<strong class="num_result02">
+					[검색결과
+					<span>${vocmWebSearch.pagination.totalRecordCount}</span>
+					건]
+				</strong>
+			</h3>
+			<a href="vocm/findAudtForm.do?recvSeq=0" class="btn sm grd">+ 글쓰기</a>
+		</div>
+		<c:choose>
+			<c:when test="${!empty recvList}">
+				<div id="appendList">
+					<c:forEach var="vocRecv" items="${recvList}" varStatus="loop">
+						<div class="tbl_line">
+							<div class="cont03">
+								<c:if test="${vocRecv.vocClsfNm eq '죽전'}">
+									<strong class="cdt blue">칭찬불친절-${vocRecv.vocClsfNm}</strong>
+								</c:if>
+								<c:if test="${vocRecv.vocClsfNm eq '천안'}">
+									<strong class="cdt green">칭찬불친절-${vocRecv.vocClsfNm}</strong>
+								</c:if>
+								<c:if test="${vocRecv.vocClsfNm eq '공통'}">
+									<strong class="cdt gray">칭찬불친절-${vocRecv.vocClsfNm}</strong>
+								</c:if>
+								<br />
+								<strong class="fs_16">${vocRecv.ttl}</strong>
+							</div>
+							<div class="tbl_dsp type_dash">
+								<div class="cell_mid w_50">
+									<em class="fc_gray fw_b">작성자</em><br />
+									<c:choose>
+										<c:when test="${vocRecv.scrtWrtiYn eq 1}">
+											<strong class="fs_15">비공개</strong>
+										</c:when>
+										<c:otherwise>
+											<strong class="fs_15">${vocRecv.wrirNm}</strong>
+										</c:otherwise>
+									</c:choose>
+								</div>
+								<div class="cell_mid w_50">
+									<em class="fc_gray fw_b">작성일</em><br />
+									<strong class="fs_15">${vocRecv.wriDm}</strong>
+								</div>
+							</div>
+							<div class="txt_more">
+								<a href="#" class="btn_more" data-params='{"recvSeq": "${vocRecv.recvSeq}", "scrtWrtiYn": "${vocRecv.scrtWrtiYn}", "wrirId": "${vocRecv.wrirId}"}'>상세보기</a>
+							</div>
+						</div>
+					</c:forEach>
+				</div>
+			</c:when>
+			<c:otherwise>
+				<div class="box_empty">
+					<p class="tit">조회된 데이터가 없습니다.</p>
+				</div>
+			</c:otherwise>
+		</c:choose>
+	</div>
+</div>
+<div id="scrollMoreTpl" style="display: none">
+	<div class="tbl_line">
+		<div class="cont03">
+			<strong class="cdt {color}">칭찬불친절 - ${vocRecv.vocClsfNm}</strong>
+			<br />
+			<strong class="fs_16">{ttl}</strong>
+		</div>
+		<div class="tbl_dsp type_dash">
+			<div class="cell_mid w_50">
+				<em class="fc_gray fw_b">작성자</em><br />
+				<strong class="fs_15">{wrirNm}</strong>
+			</div>
+			<div class="cell_mid w_50">
+				<em class="fc_gray fw_b">작성일</em><br />
+				<strong class="fs_15">{wriDm}</strong>
+			</div>
+		</div>
+		<div class="txt_more">
+			<a href="#" class="btn_more" data-params='{"recvSeq": "{recvSeq}", "scrtWrtiYn": "{scrtWrtiYn}", "wrirId": "{wrirId}"}'>상세보기</a>
+		</div>
+	</div>
+</div>
+<div id="audt_info_template" style="display: none;">
+	<div class="voc_wrap">
+		<div class="box_white">
+			<strong class="cdt {color}">칭찬불친절 - {vocClsfNm}</strong>
+			<br />
+			<strong class="fs_16">{ttl}</strong>
+		</div>
+		<div class="top_line">
+			<table>
+				<caption>Q&amp;A 내용</caption>
+				<colgroup>
+					<col style="width: 55px" />
+					<col />
+					<col style="width: 55px" />
+					<col style="width: 80px" />
+				</colgroup>
+				<tbody>
+					<tr>
+						<th scope="row" class="line_bot">작성자</th>
+						<td class="line_bot ta_l">
+							<strong>{wrirNm}</strong>
+						</td>
+						<th scope="row" class="line_bot">작성일</th>
+						<td class="line_bot">
+							<strong>{wriDm}</strong>
+						</td>
+					</tr>
+					<tr class="tbl_cont">
+						<td colspan="4" class="top_line ta_l h_80_px TEXT_HTML">{vocCont}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="box_gray file_download">
+			<strong class="fc_gray02">첨부파일: </strong>
+			<a href="comm/syst/file/download.do?fileSeq={fileSeq}&fileCdval={fileCdval}" class="ico_down td_under fc_blue02">{fileNm}</a>
+		</div>
+		<div class="btn_wrap">
+			<a href="#" class="btn gray02 LAYOUT_CLOSE_BTN">목록보기</a>
+		</div>
+	</div>
+</div>

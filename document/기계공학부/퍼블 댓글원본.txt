@@ -1,0 +1,56 @@
+<!-- 덧글쓰기 -->
+<div class="tbl_top ta_l">
+	<span class="tot_txt"><img src="/common/css/images/icon/icon_top_list.jpg" alt="글수" />글 수<span>123${paramMap.paginationInfo.totalRecordCount}</span></span>
+</div>
+<div class="coment_wrap">
+	<!-- 코멘트 박스 -->
+	<div class="coment_box">
+		<div class="coment_img">
+			<span><img src="/common/css/images/sub/profle_img.jpg" alt="프로필" /></span>
+		</div>
+		<div class="coment_txt">
+			<div class="txt_tit">
+				<div class="name_w">
+					<span class="name">태양처럼 살자</span> <span class="date">2015.05.19 17:27:40</span>
+				</div>
+				<div class="coment_btn_w">
+					<a href="#"><img src="/common/css/images/icon/icon_write.gif" alt="쓰기" />댓글</a> <a href="#"><img src="/common/css/images/icon/icon_amend.gif" alt="수정" />수정</a> <a href="#"><img src="/common/css/images/icon/icon_del.gif" alt="삭제" />삭제</a>
+				</div>
+			</div>
+			<p class="txt">
+				취업게시판 DB만 다른 계정으로 따로 관리하기라도 하나요? 자유게시판 등은 문제없었는데 유독 취게만 문제있었다는게 이상하네요..<br /> 여러 사람들의 반발 때문에 슬며시 원상복구 시켜놓고 핑계대는 것처럼 보이는건 저뿐인가요?<br /> 이 글 올리신지 3주가 넘었는데 관련공지글은 언제 올리실건지..
+			</p>
+		</div>
+	</div>
+	<!-- //코멘트 박스 -->
+	<!-- 리코멘트 박스 -->
+	<div class="re_coment_box">
+		<div class="coment_img">
+			<span><img src="/common/css/images/sub/profle_img.jpg" alt="프로필" /></span>
+		</div>
+		<div class="coment_txt">
+			<div class="txt_tit">
+				<div class="name_w">
+					<span class="name">홍길동</span> <span class="date">2015.05.19 17:27:40</span>
+				</div>
+				<div class="coment_btn_w">
+					<a href="#"><img src="/common/css/images/icon/icon_write.gif" alt="쓰기" />댓글</a> <a href="#"><img src="/common/css/images/icon/icon_amend.gif" alt="수정" />수정</a> <a href="#"><img src="/common/css/images/icon/icon_del.gif" alt="삭제" />삭제</a>
+				</div>
+			</div>
+			<p class="txt">멘토님 감사합니다. 참고로 제 도메인 주소를 알려드릴게요.</p>
+		</div>
+	</div>
+	<!-- //리코멘트 박스 -->
+	<!-- 글쓰기 -->
+	<div class="com_wri_w">
+		<div class="com_wri_box">
+			<div class="coment_img">
+				<span><img src="/common/css/images/sub/profle_img.jpg" alt="프로필" /></span>
+			</div>
+			<textarea cols="70" rows="4" class="code" placeholder="댓글을 입력하세요" /></textarea>
+			<a href="#">등록</a>
+		</div>
+	</div>
+	<!-- //글쓰기 -->
+</div>
+<!-- 덧글쓰기 -->

@@ -1,0 +1,33 @@
+1. 다이나믹 웹 module 2.5
+
+2. WebContent \ WEB_INF \ classes
+
+3. lib 필요한거 복사 후
+   -> 프로젝트 Properties -> java Build Path
+
+4. Web.xml 등록(WEB_INF)
+
+5. Controller 생성 (BoradController.java)
+   -> src\zproject\board
+6. jsp 생성
+   -> WEB-INF\classes\zproject\board
+7. spring 폴더 
+   -> WEB-INF\spring
+8.Web.xml
+   -> spring파일 - 1. context-common.xml 2. context-servlet.xml
+9. 톰캣 프로젝트 등록 (edit)
+10. Web Content 안에 index.do (web.xml 설정)
+   -> spring-context.xml         //     base-package = "프로젝트명"
+
+
+
+
+
+
+
+
+
+
+
+
+Controller -> Service(Impl) -> Repository

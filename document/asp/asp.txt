@@ -1,0 +1,43 @@
+﻿sjhdhjsdkjA
+sjhdhjsdkjA
+sjhdhjsdkjA
+sjhdhjsdkjA
+
+ResordSet => ResultSet
+
+class
+
+dll
+
+JDBC
+
+ADODB
+
+ASP -> VBSCript 기반 -> VB스크립트 -> VB -> 베이직기반의 언어
+
+
+fi (조건) {
+
+}else if (조건2){
+
+}else{
+
+}
+
+if 조건 then
+
+elseif 조건2 then
+
+else
+
+end
+
+or
+and
+>
+>=
+<
+<=
+not
+
+Str_trim

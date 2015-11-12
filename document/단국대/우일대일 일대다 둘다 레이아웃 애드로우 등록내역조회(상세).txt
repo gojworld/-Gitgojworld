@@ -1,0 +1,114 @@
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ include file="/WEB-INF/includes/taglibs.jsp"%>
+<script type="text/javascript">
+	$(document).ready(function(){
+		var $findSemMiscfPaidListTemplate=$("#findSemMiscfPaidList").clone();
+		$("#findSemMiscfPaidList").remove();
+		$(".txt_more").click(function(e){
+			e.preventDefault();
+			var params=$(this).params();
+			var url="univ/enrl/rcmg/findSemMiscfPaidList.do";
+			$.getJSON(url,params,function(data){
+				var $findSemMiscfPaidList=$findSemMiscfPaidListTemplate.clone();
+				var $list=$findSemMiscfPaidList.find(".tbl_round").clone();
+				$findSemMiscfPaidList.find(".tbl_round").remove();
+				if(data.semMiscfPaidList.length){
+					$.each(data.semMiscfPaidList,function(i,enrty){
+						$findSemMiscfPaidList.find(".list").addRow($list,enrty);
+					});
+				}else{
+					$findSemMiscfPaidList.find(".list").append('<div class="box_empty"><p class="tit">조회된 데이터가 없습니다.</p></div>');
+				}
+				$findSemMiscfPaidList.bindParams(params).layout();
+			});
+		});
+	});
+</script>
+<div class="tfeep_wrap">
+	<c:forEach var="tfeePymtgDscList" items="${tfeePymtgDscList}" varStatus="status">
+		<div class="tbl_line">
+			<div class="tbl_dsp">
+				<div class="cell_mid w_50 ta_c">
+					<strong>${tfeePymtgDscList.yy}년 ${tfeePymtgDscList.semCd}학기 등록금 합계</strong>
+					<br />
+					<strong class="fs_25 fc_blue">${tfeePymtgDscList.tfeeTotamt}</strong>
+				</div>
+				<ul class="list_line">
+					<li>
+						<span>실납입금액</span>
+						<em>${tfeePymtgDscList.realPymAmt}</em>
+					</li>
+					<li>
+						<span>수납금액</span>
+						<em>${tfeePymtgDscList.rcipTfeeTotamt}</em>
+					</li>
+					<li>
+						<span>수납일자</span>
+						<em class="fc_org">${tfeePymtgDscList.rcipDt}</em>
+					</li>
+				</ul>
+			</div>
+			<div class="txt_more ">
+				<input type="hidden" name="yy" value="${tfeePymtgDscList.yy}" />
+				<input type="hidden" name="semCd" value="${tfeePymtgDscList.semCd}" />
+				<input type="hidden" name="etrsAmt" value="${tfeePymtgDscList.etrsAmt}" />
+				<input type="hidden" name="ttnf" value="${tfeePymtgDscList.ttnf}" />
+				<input type="hidden" name="resTfee" value="${tfeePymtgDscList.resTfee}" />
+				<input type="hidden" name="notiSchspTotamt" value="${tfeePymtgDscList.notiSchspTotamt}" />
+				<a href="#" class="btn_more">상세내용 보기</a>
+			</div>
+		</div>
+	</c:forEach>
+</div>
+<div id="findSemMiscfPaidList" style="display: none;">
+	<div class="tfeep_wrap">
+		<div class="group">
+			<div class="tit_group">
+				<h3>등록금 내역 상세</h3>
+			</div>
+			<div class="tbl_line tbl_row">
+				<table>
+					<caption>등록금 내역 상세</caption>
+					<thead>
+						<tr>
+							<th scope="col">입학금</th>
+							<th scope="col">수업료</th>
+							<th scope="col">연구등록금</th>
+							<th scope="col">장학금</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="ta_c">{etrsAmt}</td>
+							<td class="ta_c">{ttnf}</td>
+							<td class="ta_c">{resTfee}</td>
+							<td class="ta_c">{notiSchspTotamt}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="group list">
+			<div class="tit_group">
+				<h3>학기별잡부금납부내역</h3>
+			</div>
+			<div class="tbl_round">
+				<div class="tbl_dsp">
+					<div class="cell_mid ta_c">
+						<strong class="fs_16 fw_n">{tfeeItemNm}</strong>
+					</div>
+				</div>
+				<div class="tbl_dsp type_solid ta_c">
+					<div class="cell_mid w_50">
+						<em class="mr_5">납입금액</em>
+						<strong>{pymAmt}</strong>
+					</div>
+					<div class="cell_mid">
+						<em class="mr_5">수납금액</em>
+						<strong class="fc_blue fw_bb">{rcipAmt}</strong>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

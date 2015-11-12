@@ -1,0 +1,48 @@
+search.setDtFg("3");
+
+private String dtFg;
+
+
+RproMapper.xml
+findRprjPcptnCfmList
+<!-- 모바일서비스 조건추가 -->
+<if test="dtFg != null">
+      <if test="dtFg.equalsIgnoreCase('3')">
+	      <if test="frDt != null">
+		    AND TO_CHAR(TO_DATE(C.PCPTN_FR_DT,'YYYY-MM-DD'),'YYYY-MM') <![CDATA[ >= ]]>  #{frDt}
+	      </if>
+	      <if test="toDt != null">
+		    AND TO_CHAR(TO_DATE(C.PCPTN_TO_DT,'YYYY-MM-DD'),'YYYY-MM') <![CDATA[ <= ]]>  #{toDt}
+	      </if>
+      </if>
+</if>
+
+
+PropMapper.xml
+findRprjCtstList
+<!-- 모바일서비스 조건추가 -->
+<if test="dtFg != null">
+	<if test="dtFg.equalsIgnoreCase('3')">
+		<if test="frDt != null">
+			AND TO_CHAR(TO_DATE(rrc.fr_dt,'YYYY-MM-DD'),'YYYY-MM') <![CDATA[ >= ]]>  #{frDt}
+		</if>
+		<if test="toDt != null">
+			AND TO_CHAR(TO_DATE(rrc.to_dt,'YYYY-MM-DD'),'YYYY-MM') <![CDATA[ <= ]]>  #{toDt}
+		</if>
+	</if>
+</if>
+
+
+
+
+/**
+	    * 연구과제참여 List를 조회한다. (모바일)
+	    *
+	    *
+	    */
+	@RequestMapping(value = "/views/findTskPcptnPcondList.do")
+	public String findTskPcptnPcondList(RprjSearch search, Model model) {
+		return "resm/rpro/rpro/findTskPcptnPcondList";
+	}
+
+

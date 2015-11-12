@@ -1,0 +1,21 @@
+if(data.vMobileBbsList.length!=20){
+	_self.pageSync=false;
+}
+
+
+$(function(){
+	$(window).scroll(function(){
+		if($(window).scrollTop()>=$(document).height()-$(window).height()&&_self.pageSync){
+			_self.page++;
+			_self.pageSync=false;
+			_self.list();
+		}
+	});
+	$(window).bind('mousewheel',function(event){
+		if(event.originalEvent.wheelDelta<=0&&$(document).height()-$(window).height()==0&&_self.pageSync){
+			_self.page++;
+			_self.pageSync=false;
+			_self.list();
+		}
+	});
+});

@@ -1,0 +1,8 @@
+WebContent - WEB_INF - properties - globals.properties 에서 REAL CONFIG VALUES 말고 LOCAL CONFIG VALUES EX DB를 ORACLE로 바꾸고
+#Local Config Values
+local.db=mysql
+local.ex.db=mysql
+이부분 수정(ex만수정)
+쿼리문이 잘 돌아가는지 확인
+
+다바꾸고난 후 local.jsp 로그인 정보 바꿔서 확인

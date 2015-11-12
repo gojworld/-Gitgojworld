@@ -1,0 +1,13 @@
+private CodeService codeService;
+
+@Autowired
+public void setCodeService(CodeService codeService) {
+	this.codeService = codeService;
+}
+
+CommCodeDataSearch codeDataSearch = new CommCodeDataSearch();
+codeDataSearch.setCmnCdId("HR_INST_CD");    // 기관코드
+List<CommCdDet> exmtPlcCdList = codeService.findCommCodeDataList(codeDataSearch);
+
+
+종합정보에서 공통코스상세에서 비교후 입력

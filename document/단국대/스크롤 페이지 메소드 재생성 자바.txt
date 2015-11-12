@@ -1,0 +1,29 @@
+/**
+ * 스크롤페이지로 인한 메소드 재생성
+ * */
+@RequestMapping("/findVocListJson.do")
+public void findVocList(@RequestParam int currentPageNo, Model model) {
+	VocmWebSearch vocmWebSearch = new  VocmWebSearch();
+	vocmWebSearch.getPagination().setCurrentPageNo(currentPageNo);
+	String url = chkUserTyCd(); //외부유지보수, 이메일사용자일 경우 redirect
+	if(url!=null) {
+		return;
+	} else {
+		CommCodeDataSearch codeDataSearch = new CommCodeDataSearch();
+		UserDetails userDetails = SecurityContextHelper.getUserDetails();
+		codeDataSearch.setCmnCdId("VOC_CAMP_CD"); // 캠퍼스구분
+		vocmWebSearch.setVocCd("2");
+		vocmWebSearch.setCcYn("0");
+//			falg : 조회여부를 확인하여 캠퍼스 설정
+//			if (!vocmWebSearch.isFlag())
+//				vocmWebSearch.setVocCampCd(userDetails.getDeptLoctCd());
+		//vocmWebSearch.setScrtWrtiYn("0");	//비밀글여부 0
+		List<CamelCaseMap> recvList = vocmService.findRecvList(vocmWebSearch);
+		PaginationUtils.bindTotalRecordCount(vocmWebSearch.getPagination(), recvList, "totCnt");
+		model.addAttribute("vocClsfCdList", vocmService.findVocMngtClsfCd(vocmWebSearch.getVocCd(), vocmWebSearch.getVocCampCd(), ""));  //구분조회
+		model.addAttribute("vocCampCdList", codeService.findCommCodeDataList(codeDataSearch));
+		model.addAttribute("vocCd", vocmService.findVocCd("2"));
+		model.addAttribute("currentDate", utilService.findCurrentDate("YYYY-MM-DD"));  //서버시간
+		model.addAttribute("recvList", recvList);
+	}
+}

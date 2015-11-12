@@ -1,0 +1,199 @@
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ include file="/WEB-INF/includes/taglibs.jsp"%>
+<script type="text/javascript">
+	var _self={
+		"page":1,
+		"pageSync":true,
+		'template':null,
+		category:{
+			"죽전":"blue",
+			"천안":"green",
+			"공통":"gray",
+		},
+		"list":function(){
+			$.ajax({
+				type:"post",
+				url:"vocm/findFaqListJson.do",
+				async:true,
+				dataType:"json",
+				data:{
+					"currentPageNo":_self.page,
+				},
+				success:function(data){
+					var $listUl=$("#appendList");
+					if(data.recvList.length==10){
+						_self.pageSync=true;
+					}
+					$.each(data.recvList,function(index,entry){
+						$.extend(entry,{
+							"color":_self.category[entry.vocCampNm],
+						});
+						$listUl.addRow(_self.template,entry);
+					});
+				}
+			});
+		}
+	};
+	$(document).ready(function(){
+		if($("#appendList li").length==10){
+			_self.page++;
+			_self.pageSync=false;
+			_self.list();
+		}
+		_self.template=$("#scrollMoreTpl").html();
+		_self.pageSync=$("#appendList").length>0;
+		$(function(){
+			$(window).scroll(function(){
+				if($(window).scrollTop()>=$(document).height()-$(window).height()&&_self.pageSync){
+					_self.page++;
+					_self.pageSync=false;
+					_self.list();
+				}
+			});
+			$(window).bind('mousewheel',function(event){
+				if(event.originalEvent.wheelDelta<=0&&$(document).height()-$(window).height()==0&&_self.pageSync){
+					_self.page++;
+					_self.pageSync=false;
+					_self.list();
+				}
+			});
+		});
+		var category={
+			"죽전":"blue",
+			"천안":"green",
+			"공통":"gray",
+		}
+		var $faq_info_template=$("#faq_info_template").clone();
+		var url="vocm/findFaqDetail.do";
+		var params;
+		$("#faq_info_template").remove();
+		$("#appendList").on("click","a",function(e){
+			e.preventDefault();
+			params=$(this).data("params");
+			$.getJSON(url,params,function(data){
+				if(data.recv){
+					var $faqInfo=$faq_info_template.clone();
+					if(!data.attachFile) $faqInfo.find(".file_download").remove();
+					$faqInfo.bindParams($.extend(data.recv,{
+						"color":category[data.recv.vocCampNm],
+						"fileSeq":data.attachFile?data.attachFile.fileSeq:"",
+						"fileCdval":data.attachFile?data.attachFile.fileCdval:"",
+						"fileNm":data.attachFile?data.attachFile.fileNm:""
+					})).layout({
+						"title":"FAQ 상세보기"
+					});
+				}
+			});
+		});
+	});
+</script>
+<div class="notice_wrap voc_wrap">
+	<form:form modelAttribute="vocmWebSearch" method="post" action="vocm/findFaqList.do" class="form-inline" data-role="search" data-message="alert">
+		<div class="search_wrap">
+			<ul>
+				<li>
+					<span class="form_select">
+						<select id="vocClsfCd" name="vocClsfCd" class="chosen-select">
+							<option value="">전체</option>
+							<c:forEach var="vocClsfCd" items="${vocClsfCdList}" varStatus="loop">
+								<option value="${vocClsfCd.vocClsfCd}" title="${vocClsfCd.rmk}">${vocClsfCd.vocClsfNm}</option>
+							</c:forEach>
+						</select>
+					</span>
+				</li>
+				<li>
+					<button class="btn gray02">SEARCH</button>
+				</li>
+			</ul>
+		</div>
+	</form:form>
+	<div class="group">
+		<div class="tit_group">
+			<h3>검색결과</h3>
+			<strong class="num_result">
+				[검색결과
+				<span>${vocmWebSearch.pagination.totalRecordCount}</span>
+				건]
+			</strong>
+		</div>
+		<c:choose>
+			<c:when test="${!empty recvList}">
+				<ul class="list_notice" id="appendList">
+					<c:forEach var="vocRecv" items="${recvList}" varStatus="loop">
+						<li>
+							<a href="#" data-params='{"recvSeq": "${vocRecv.recvSeq}"}'>
+								<c:if test="${vocRecv.vocCampNm eq '죽전'}">
+									<strong class="cdt blue">${vocRecv.vocCampNm}</strong>
+								</c:if>
+								<c:if test="${vocRecv.vocCampNm eq '천안'}">
+									<strong class="cdt green">${vocRecv.vocCampNm}</strong>
+								</c:if>
+								<c:if test="${vocRecv.vocCampNm eq '공통'}">
+									<strong class="cdt gray">${vocRecv.vocCampNm}</strong>
+								</c:if>
+								<strong class="fc_gray">[ ${vocRecv.vocClsfNm} ]</strong>
+								<br />
+								<c:choose>
+									<c:when test="${vocRecv.procCnt > 0}">
+										<strong>
+											<c:out value="${vocRecv.ttl}[${vocRecv.procCnt}]" escapeXml="true" />
+										</strong>
+									</c:when>
+									<c:otherwise>
+										<strong>
+											<c:out value="${vocRecv.ttl}" escapeXml="true" />
+										</strong>
+									</c:otherwise>
+								</c:choose>
+							</a>
+						</li>
+					</c:forEach>
+				</ul>
+			</c:when>
+			<c:otherwise>
+				<div class="box_empty">
+					<p class="tit">조회된 데이터가 없습니다.</p>
+				</div>
+			</c:otherwise>
+		</c:choose>
+		</ul>
+	</div>
+</div>
+<div id="scrollMoreTpl" style="display: none">
+	<li>
+		<a href="#" data-params='{"recvSeq": "{recvSeq}"}'>
+			<strong class="cdt {color}">{vocCampNm}</strong>
+			<strong class="fc_gray">[ {vocClsfNm} ]</strong>
+			<br />
+			<strong> {ttl} </strong>
+		</a>
+	</li>
+</div>
+<div id="faq_info_template" style="display: none;">
+	<div class="notice_wrap voc_wrap">
+		<div class="box_blue">
+			<strong class="cdt {color}">{vocCampNm}</strong>
+			<strong class="fc_gray">[ {vocClsfNm} ]</strong>
+			<br />
+			<h3>{ttl}</h3>
+		</div>
+		<ul class="list_line reset02">
+			<li>
+				<span>작성자</span>
+				<em>{wrirNm}</em>
+			</li>
+			<li>
+				<span>작성일</span>
+				<em>{wriDm}</em>
+			</li>
+		</ul>
+		<div class="cont top_line">{vocCont}</div>
+		<div class="box_gray file_download">
+			<strong class="fc_gray02">첨부파일: </strong>
+			<a href="comm/syst/file/download.do?fileSeq={fileSeq}&fileCdval={fileCdval}" class="ico_down td_under">{fileNm}</a>
+		</div>
+		<div class="btn_wrap">
+			<a href="#" class="btn gray02 LAYOUT_CLOSE_BTN">목록보기</a>
+		</div>
+	</div>
+</div>

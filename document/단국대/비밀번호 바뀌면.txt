@@ -1,0 +1,25 @@
+Ekseo!23
+딴대
+비밀번호 바뀌면 web안에 PotfController 수정
+
+package kr.dku.potf;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import kr.dku.base.security.access.annotation.Secured;
+import kr.dku.base.security.access.annotation.SecurityPolicy;
+import kr.dku.base.security.authentication.UsernamePasswordAuthenticationRequestToken;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+@RequestMapping(value="/potf")
+@Controller
+public class PotfController{
+	@Secured(policy=SecurityPolicy.IGNORE)
+	@RequestMapping(value="/login.do")
+	public void login(HttpServletRequest request,HttpServletResponse response) throws Exception{
+		String id=request.getParameter("id");
+		id=id==null?"11801112":id;
+		request.setAttribute(UsernamePasswordAuthenticationRequestToken.USERNAME_PARAMETER,id);
+		request.setAttribute(UsernamePasswordAuthenticationRequestToken.PASSWORD_PARAMETER,"Ekseo!23");
+		request.getRequestDispatcher("/j_security_check").forward(request,response);
+	}
+}

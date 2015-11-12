@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<script>
+	var jsp={
+		"index":function(result){
+			for( var i=0;i<result.list.length;i++){
+				document.write("<tr>");
+				document.write("<td>"+(i+1)+"</td>");
+				document.write("<td>"+result.list[i]["부서"]+"</td>");
+				document.write("<td>"+result.list[i]["직위"]+"</td>");
+				document.write("<td>"+result.list[i]["사용자명"]+"</td>");
+				document.write("<td>"+result.list[i]["아이디"]+"</td>");
+				document.write("<td>"+result.list[i]["이메일"]+"</td>");
+				document.write("<td>"+result.list[i]["연락처"]+"</td>");
+				document.write("<td>"+result.list[i]["등록일"]+"</td>");
+				document.write("</tr>");
+			}
+		}
+	};
+	var boardController={
+		/**
+		@RequestMapping(value={"/index.do"})
+		*/
+		"index":function(){
+			var result=boardService.list();
+			jsp.index(result);
+		}
+	};
+	var boardService={
+		"list":function(){
+			var result = {}; // MyMap result = new MyMap();
+			result["list"] =  boardRepository.list;
+			return result;
+		}
+	};
+	var boardRepository={
+		"list":[
+				{
+					"부서":"개발",
+					"직위":"인턴",
+					"사용자명":"박주원",
+					"아이디":"forstar",
+					"이메일":"forstar@syworks.com",
+					"연락처":"010-1111-1111",
+					"등록일":"2015-05-08"
+				},{
+					"부서":"개발",
+					"직위":"인턴",
+					"사용자명":"정동운",
+					"아이디":"jdw",
+					"이메일":"jdw@syworks.com",
+					"연락처":"010-2222-2222",
+					"등록일":"2015-05-08"
+				},{
+					"부서":"개발",
+					"직위":"SP",
+					"사용자명":"우준혁",
+					"아이디":"wjh",
+					"이메일":"jdw@syworks.com",
+					"연락처":"wjh-333-3333",
+					"등록일":"2015-05-08"
+				}
+		]
+	};
+</script>
+</head>
+<body>
+	<table>
+		<thead>
+			<tr>
+				<th>번호</th>
+				<th>부서</th>
+				<th>직위</th>
+				<th>사용자명</th>
+				<th>아이디</th>
+				<th>이메일</th>
+				<th>연락처</th>
+				<th>등록일</th>
+			</tr>
+		</thead>
+		<tbody>
+			<script>
+				boardController.index();
+			</script>
+		</tbody>
+	</table>
+</body>
+</html>

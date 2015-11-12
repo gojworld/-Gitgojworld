@@ -1,0 +1,15 @@
+<tr>
+	<td rowspan="3">
+		<div>
+			<img src="/thumbnail.do?encSvrFileNm=${fn:get(orgzInfo.ulFile.ulFileLstList,0).encSvrFileNm}&width=100&height=100" class="img_cnt" id="previewImg" />
+		</div>
+		<form:hidden path="ulFile.ufSeq" />
+		<input type="hidden" name="ulFile.status" value="<c:out value="${orgzInfo.ulFile.ufSeq<=0 ? 2:4}"/>" />
+		<textarea name="ulFile.ulFileLstList" id="ulFile_ulFileLstList" class="dn">${fn:toJson(fn:get(orgzInfo.ulFile.ulFileLstList,0))}</textarea>
+		<input type="button" value="찾아보기" class="{'ime':'fileBtn','target':'#ulFile_ulFileLstList','preview':'#previewImg'}"/>
+	</td>
+	<th>이름</th>
+	<td colspan="3">
+		<form:input path="nm" class="w_50" title="이름" />
+	</td>
+</tr>

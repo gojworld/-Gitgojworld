@@ -1,0 +1,8 @@
+db정보
+
+27.1.137.32 :3306
+snu_career // snu_career
+
+접속해서
+
+snu_career_last

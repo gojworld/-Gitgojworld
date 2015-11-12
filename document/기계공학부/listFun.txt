@@ -1,0 +1,13 @@
+
+listFun
+
+
+
+var listFun=function(e){
+				if(e) e.preventDefault();
+				$.submit({
+					"method":"get",
+					"action":"./findSustOrgzList.do"
+				});
+			};
+			$("#listBtn").click(listFun);

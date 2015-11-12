@@ -1,0 +1,23 @@
+
+
+곽정식 차장님이나 최종광과장님으로 로그인해서
+학사정보-학적관리-기초정보관리-학사일정등록 안에
+[학생] - 수강도우미 입력시간
+[학생] - 수강철회기간
+두가지를 시작일 종료일 수정해서 테스트 진행
+
+lpciMapper
+
+findLctTmtblDscCulList
+
+
+tcamController
+
+
+
+kr.dku.univ.lssn.tcam.repository.TcamMapper.insertTkcrsPlHlper - ==>  Preparing: /* kr.dku.univ.lssn.tcam.repository.insertTkcrsPlHlper 수강계획도우미 저장 */ CALL UNIV.SP_LSSN_TKCRS_DOUMI_PROC ( ? /* 다국어코드 :1 국문 2:영문 */ ,? /* 작업구분 I: INSERT, D: DELETE 10:맨위로, 11:위로, 20:맨아래로, 21:아래로 */ ,? /* 수강신청 기간분류코드-SESSION */ ,? /* 개설조직ID */ ,? /* 년도 -SESSION */ ,? /* 학기 -SESSION */ ,? /* 학번 -SESSION */ ,? /* 대학,대학원 -SESSION */ ,? /* 가진급소속 -SESSION */ ,? /* 가진급학년 -SESSION */ ,? /* 교과목ID */ ,? /* 교과목명 */ ,? /* 분반번호 */ ,? /* 최대가능학점 -SESSION */ ,? /* 최소가능학점 -SESSION */ ,? /* 추가신청가능학점 -SESSION */ ,? /* 입력IP -SESSION */ ,? /* 입력자ID -SESSION */ ,? /* 리턴메세지 */ ,? /* 리턴코드 */ ,?) /* 리턴갯수 */ 
+kr.dku.univ.lssn.tcam.repository.TcamMapper.insertTkcrsPlHlper - ==> Parameters: 1(String), I(String), 0000000031(String), 2000000989(String), null, null, 32101990(String), null, 2000001235(String), 4(String), 511670(String), 20세기의현대디자인사(String), 1(Integer), null, null, null, [::1](String), 32101990(String)
+
+
+kr.dku.univ.lssn.tcam.repository.TcamMapper.insertTkcrsPlHlper - ==>  Preparing: /* kr.dku.univ.lssn.tcam.repository.insertTkcrsPlHlper 수강계획도우미 저장 */ CALL UNIV.SP_LSSN_TKCRS_DOUMI_PROC ( ? /* 다국어코드 :1 국문 2:영문 */ ,? /* 작업구분 I: INSERT, D: DELETE 10:맨위로, 11:위로, 20:맨아래로, 21:아래로 */ ,? /* 수강신청 기간분류코드-SESSION */ ,? /* 개설조직ID */ ,? /* 년도 -SESSION */ ,? /* 학기 -SESSION */ ,? /* 학번 -SESSION */ ,? /* 대학,대학원 -SESSION */ ,? /* 가진급소속 -SESSION */ ,? /* 가진급학년 -SESSION */ ,? /* 교과목ID */ ,? /* 교과목명 */ ,? /* 분반번호 */ ,? /* 최대가능학점 -SESSION */ ,? /* 최소가능학점 -SESSION */ ,? /* 추가신청가능학점 -SESSION */ ,? /* 입력IP -SESSION */ ,? /* 입력자ID -SESSION */ ,? /* 리턴메세지 */ ,? /* 리턴코드 */ ,?) /* 리턴갯수 */ 
+kr.dku.univ.lssn.tcam.repository.TcamMapper.insertTkcrsPlHlper - ==> Parameters: 1(String), I(String), 0000000031(String), 2000000989(String), null, null, 32101990(String), null, 2000001235(String), 4(String), 511670(String), 20세기의현대디자인사(String), 1(Integer), null, null, null, 127.0.0.1(String), 32101990(String)

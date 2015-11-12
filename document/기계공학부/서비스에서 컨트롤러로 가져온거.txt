@@ -1,0 +1,27 @@
+private BoardService boardService;
+
+
+
+
+@ModelAttribute("paramMap")
+	public MyMap getParamMap(MyMap paramMap){
+		return paramMap;
+	}
+
+
+
+paramMap.put("menuCd",menuCd);
+paramMap.put("catCd",catCd);
+MyMap result=new MyMap();
+PaginationInfo paginationInfo=new PaginationInfo();
+paginationInfo.setCurrentPageNo(paramMap.getInt("page"));
+paginationInfo.setTotalRecordCount(boardRepository.findBoardCount(paramMap));
+paramMap.put("paginationInfo",paginationInfo);
+result.put("list",boardRepository.findBoardList(paramMap));
+result.put("paramMap",paramMap);
+
+
+
+
+
+<td class="NO_RESULT">${fn:message('global.no_reulst')}</td>

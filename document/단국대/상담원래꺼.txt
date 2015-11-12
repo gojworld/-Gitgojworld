@@ -1,0 +1,271 @@
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ include file="/WEB-INF/includes/taglibs.jsp"%>
+<script src="js/nicescroll/jquery.nicescroll.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#saveBtn").click(function(e){
+			e.preventDefault();
+			$("#cuslRslt").find("[name='cuslClsfCd']").addRules({
+				required:true,
+				messages:{
+					required:"상담분류 선택해주세요."
+				}
+			})
+			$("#cuslRslt").submit();
+		});
+		$("#cuslRslt").validate({
+			rules:{
+				cuslMthdCd:{
+					required:true
+				},
+				"cuslDt_":{
+					required:true
+				},
+				cuslPlcNm:{
+					required:true
+				},
+				cuslCont:{
+					required:true
+				},
+				yy:{
+					required:true
+				},
+				semCd:{
+					required:true
+				},
+				cuslRslClsfCd:{
+					required:true
+				}
+			},
+			messages:{
+				cuslMthdCd:{
+					required:"상담방식을 입력하세요"
+				},
+				"cuslDt_":{
+					required:"상담일자를 입력하세요"
+				},
+				cuslPlcNm:{
+					required:"상담장소를 입력하세요"
+				},
+				cuslCont:{
+					required:"상담내용을 입력하세요"
+				},
+				yy:{
+					required:"년도를 입력하세요"
+				},
+				semCd:{
+					required:"학기를 입력하세요"
+				},
+				cuslRslClsfCd:{
+					required:"결과 및 참고사항을 입력하세요"
+				}
+			},
+			submitHandler:function(form){
+				if(!confirm("저장하시겠습니까?")) return;
+				$("#cuslRslt").find("[name$='cuslClsfCd']").remove();
+				var cnt=0;
+				$("#cuslRslt").find("[name='cuslClsfCd_']").each(function(index){
+					if($(this).prop("checked")){
+						$("#cuslRslt").append('<input type="hidden" name="cuslclsfList['+(cnt++)+'].cuslClsfCd" value="'+$(this).val()+'"/>');
+					}
+				});
+				$(form).find("[name='cuslDt']").val($(form).find("[name='cuslDt_']").val().replace(/\-/gi,""))
+				$.ajax({
+					type:"post",
+					url:$(form).attr("action"),
+					async:false,
+					dataType:"json",
+					data:$(form).serialize(),
+					success:function(data){
+						alert("저장되었습니다.");
+						location.reload();
+					}
+				});
+			}
+		});
+		$(".profile").find("img").error(function(){
+			$(this).attr("src","css/m/images/bg/bg_imgn.png");
+		});
+	});
+</script>
+<div class="cusl_wrap">
+	<div class="tbl_line">
+		<div class="tbl_dsp line_bot">
+			<div class="cell_mid w_90_px ta_c p_reset profile">
+				<img src="comm/syst/file/download.do?fileSeq=${stuInfo.fileSeq}&fileCdval=${stuInfo.fileCdval}" alt="프로필사진" />
+			</div>
+			<ul class="list_line">
+				<li>
+					<span>성명</span>
+					<em class="fw_bb">${stuInfo.nm}</em>
+				</li>
+				<li>
+					<span>학번</span>
+					<em>${stuInfo.stuid}</em>
+				</li>
+				<li>
+					<span>소속</span>
+					<em>${stuInfo.pstnOrgzNm}</em>
+				</li>
+			</ul>
+		</div>
+		<div class="tbl_dsp">
+			<div class="cell_mid w_70_px ta_c">
+				<strong class="fc_org fw_bb">[ ${stuInfo.scregStaNm} ]</strong>
+			</div>
+			<ul class="list_line">
+				<li>
+					<span>학년/학기</span>
+					<em>${stuInfo.schgr}학년 ${stuInfo.semNm}</em>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<form name="cuslRslt" id="cuslRslt" method="post" action="univ/cusl/cslm/saveCuslRslt.do" data-role="R" data-message="alert">
+		<input type="hidden1" name="callPageGbn" value="${callPage}">callPage
+		<input type="hidden1" name="pTabIndex" value="${pTabIndex}">pTabIndex
+		<input type="hidden" name="pYy" value="${pYy}">pYy
+		<input type="hidden" name="pSemCd" value="${pSemCd}">pSemCd
+		<input type="hidden1" name="selKey" value="${selKey}">selKey
+		<input type="hidden1" name="pSubjId" value="${selPsubjId}">selPsubjId
+		<input type="hidden1" name="pDvclsNb" value="${selPdvclsNb}">selPdvclsNb
+		<input type="hidden1" name="pOpOrgid" value="${selPopOrgid}">selPopOrgid
+		<input type="hidden" name="yy" value="${basYySemCd[0].basYy}">basYy
+		<input type="hidden" name="semCd" value="${basYySemCd[0].basSemCd}">basSemCd
+		<input type="hidden" name="scregStuid" value="${stuInfo.stuid}">
+		<input type="hidden" name="stuid" value="${stuInfo.stuid}">
+		<input type="hidden1" name="cuslSeq" value="${stuInfo.cuslSeq}"/>cuslSeq
+		<input type="hidden1" name="cuslDt" value="${stuInfo.cuslDt}"/>cuslDt
+		<div class="group">
+			<div class="tit_group">
+				<h3>상담결과입력</h3>
+			</div>
+			<div class="tbl_line tbl_row">
+				<table>
+					<caption>상담일자와 상담입력</caption>
+					<colgroup>
+						<col style="width: 25%" />
+						<col />
+						<col style="width: 20%" />
+						<col />
+					</colgroup>
+					<tbody>
+						<tr>
+							<th scope="row">상담방식</th>
+							<td colspan="3">
+								<span class="form_select">
+									<select id="cuslMthdCd" name="cuslMthdCd" class="chosen-select" data-placeholder="선택">
+										<c:forEach var="cuslMthdCdList" items="${cuslMthdCdList}" varStatus="status">
+											<option value="${cuslMthdCdList.cmnCdval}">${cuslMthdCdList.cmnCdvalNm}</option>
+										</c:forEach>
+									</select>
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">상담일자</th>
+							<td colspan="3">
+								<span class="form_text">
+									<input type="date" name="cuslDt_" title="상담일자">
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">상담장소</th>
+							<td colspan="3">
+								<span class="form_text">
+									<input type="text" name="cuslPlcNm" title="상담장소">
+								</span>
+							</td>
+						</tr>
+						<tr class="tbl_cont">
+							<th scope="row">상담내용</th>
+							<td colspan="3">
+								<span class="form_text">
+									<textarea name="cuslCont" cols="30" rows="5" title="상담내용"></textarea>
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">결과 및 참고</th>
+							<td colspan="3">
+								<span class="form_select">
+									<select name="cuslRslClsfCd" class="chosen-select" data-placeholder="선택">
+										<c:forEach var="cuslRslClsfCdList" items="${cuslRslClsfCdList}" varStatus="status">
+											<option value="${cuslRslClsfCdList.cmnCdval}">${cuslRslClsfCdList.cmnCdvalNm}</option>
+										</c:forEach>
+									</select>
+								</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="group">
+			<div class="tit_group">
+				<h3 class="chk black">상담분류</h3>
+			</div>
+			<div class="tbl_line tbl_row">
+				<table>
+					<caption>구분에 따른 비고와 선택</caption>
+					<colgroup>
+						<col style="width: 15%" />
+						<col style="width: 20%" />
+						<col />
+					</colgroup>
+					<thead>
+						<tr>
+							<th scope="col">선택</th>
+							<th scope="col">구분</th>
+							<th scope="col">비고</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:choose>
+							<c:when test="${!empty cuslClsfCdList}">
+								<c:forEach var="cuslClsfCdList" items="${cuslClsfCdList}" varStatus="loop">
+									<tr>
+										<td class="ta_c">
+											<span class="form_chck">
+												<input type="checkbox" id="cuslClsfCd_${loop.count}" name="cuslClsfCd_" value="${cuslClsfCdList.cmnCdval}">
+												<label for="cuslClsfCd_${loop.count}" class="hide">선택</label>
+											</span>
+										</td>
+										<td>${cuslClsfCdList.cmnCdvalNm}</td>
+										<td>${cuslClsfCdList.addtInfoValu1}</td>
+									</tr>
+								</c:forEach>
+							</c:when>
+							<c:otherwise>
+								<div class="box_empty">
+									<p class="tit">조회된 데이터가 없습니다.</p>
+								</div>
+							</c:otherwise>
+						</c:choose>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="group line_bot">
+			<div class="tit_group">
+				<h3 class="info">안내</h3>
+			</div>
+			<div class="box_info">
+				<ul class="list_hyphen">
+					<li>
+						<span class="list_head">*</span>
+						<strong class="fc_org02">공학멘토링</strong>
+						상담자의 경우 상담분류를 반드시
+						<strong class="fc_org02">[멘토링]</strong>
+						으로 선택하여야 성적처리가 가능합니다.
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="btn_wrap">
+			<ui:button type="submit" name="saveBtn" text="저장" role="C" className="btn blue f_l w_49" />
+			<a href="univ/cusl/cslm/views/findCuslReg.do" class="btn white">취소</a>
+		</div>
+	</form>
+</div>

@@ -1,0 +1,21 @@
+@Autowired
+	private PtalService ptalService;
+	@ModelAttribute("ptalSearch")
+	public PtalSearch getPtalSearch(){
+		return new PtalSearch();
+	}
+/**
+ * 학사/행정 학사일정조회
+ *
+ * @param search
+ * @param model
+ * @return
+ */
+@RequestMapping(value="/views/findBachSchedList.do")
+public String findBachSchedList(PtalSearch search,Model model){
+	if(search.getYear()==0){
+		search.setYear(ptalService.findBasicDate(search).getInt("basYy"));
+	}
+	model.addAttribute("bachSchedList",ptalService.findBachSchedList(search));
+	return "/etcs/ptal/findBachSchedList";
+}

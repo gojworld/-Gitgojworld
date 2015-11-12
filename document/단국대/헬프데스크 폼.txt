@@ -1,0 +1,77 @@
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ include file="/WEB-INF/includes/taglibs.jsp"%>
+<script type="text/javascript">
+	$( document ).ready( function () {
+		$("#wrap").css({"padding-top":"0px"});
+		$("#header").hide();
+		$( "#notcCont" ).val("핸드폰 기종 :\r\n프로그램명 :\r\n내용(자세히 적어주세요) :\r\n");
+		$( "#saveBtn" ).click( function ( e ) {
+			e.preventDefault();
+			if ( $( "#notcTtl" ).val().trim() == null || $( "#notcTtl" ).val().trim() == "" ) {
+				$( "#notcTtl" ).val( "" );
+				alert( "제목은 필수입력값입니다." );
+				$( "#notcTtl" ).focus();
+				return false;
+			}
+			if ( $( "#notcCont" ).val().trim() == null || $( "#notcCont" ).val().trim() == "" ) {
+				$( "#notcCont" ).val( "" );
+				alert( "내용을 입력해주십시오." );
+				$( "#notcCont" ).focus();
+				return false;
+			}
+			if ( !confirm( "저장 하시겠습니까?" ) ) {
+				return false;
+			} else {
+				e.preventDefault();
+				$.ajax( {
+					"url" : "comm/syst/notc/saveBoardBasMo.do" ,
+					"data" : $( "#notc" ).serialize() ,
+					"type" : "post" ,
+					"dataType" : "json" ,
+					"success" : function ( result ) {
+						alert( "저장되었습니다." );
+						location.reload();
+					}
+				} )
+			}
+			e.preventDefault();
+		} );
+	} );
+</script>
+<form:form modelAttribute="notc" method="post" action="comm/syst/notc/saveBoardBasMo.do">
+	<div class="voc_wrap">
+		<div class="tbl_line tbl_row top_line">
+			<table>
+				<caption>오류</caption>
+				<colgroup>
+					<col style="width: 90px" />
+					<col />
+					<col style="width: 60px" />
+					<col />
+				</colgroup>
+				<tbody>
+					<tr>
+						<td class="bg_gray" colspan="4">
+							<span class="form_text">
+								<input type="hidden" name="status" id="status" value="2" />
+								<input type="hidden" name="notcSeq" id="notcSeq" />
+								<input type="hidden" name="boardId" id="boardId" value="300" />
+								<input type="text" name="notcTtl" id="notcTtl" title="제목" placeholder="제목을 입력하세요." />
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4">
+							<span class="form_text">
+								<textarea name="notcCont" id="notcCont" cols="30" rows="8" title="내용"></textarea>
+							</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="btn_wrap">
+			<a href="#" id="saveBtn" class="btn blue">등록</a>
+		</div>
+	</div>
+</form:form>

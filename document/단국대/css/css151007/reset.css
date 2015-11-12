@@ -1,0 +1,36 @@
+/*=========================================================================================================================
+* 프로젝트: CSS 초기화
+* 파일명: reset.css
+* 작업자: 박은선
+* 작업일: 2014.07.08 ~
+=========================================================================================================================*/
+@charset "utf-8";
+@import url(https://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
+/*=========================================================================================================================
+* Reset
+=========================================================================================================================*/
+body, div, p, h1,h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, form, fieldset, legend,
+input, textarea, blockquote, button, strong, em, address { margin:0;padding:0;-webkit-text-size-adjust:none; vertical-align: baseline; }
+h1, h2 ,h3, h4, h5, h6 { font-size: 100%; font-weight: normal; }
+ul, ol , li { list-style: none; }
+img {  border:0 none;vertical-align:bottom }
+img, fieldset { padding: 0; border: none; }
+legend, caption { width:0; height:0; font-size:0; line-height:0; overflow:hidden; visibility:hidden; display: none; }
+input { background: none; border: 0; }
+table { table-layout: fixed; width: 100%; border-collapse: collapse; border: 0; word-break: break-all; }
+table th { font-weight: normal; }
+strong, em, address { font-style: normal; }
+hr { display:none; }
+q:before,q:after {content:"";}
+abbr,acronym { border:0; }
+#skipnav { width:0; height:0; line-height:0; overflow:hidden; visibility:hidden; font-size:0; }
+.blind { overflow:hidden; visibility:hidden; position:absolute; width:0; height:0; font-size:0; line-height:0; }
+a { text-decoration: none; }
+select,
+input,textarea { }
+textarea { background: none; border: 0; }
+/* button 파폭 초기화 */
+button::-moz-focus-inner { border: 0; padding: 0; }
+
+

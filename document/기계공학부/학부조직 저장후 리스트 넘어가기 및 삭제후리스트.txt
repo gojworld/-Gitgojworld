@@ -1,0 +1,65 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="fn" uri="fnLibrary"%>
+<script type="text/javascript">
+	var _self={
+		"init":function(){
+			$("#listBtn").click(function(e){
+				e.preventDefault();
+				$.submit({
+					"method":"get",
+					"action":"./findSustOrgzList.do"
+				});
+			});
+			$("#saveBtn").click(function(e){
+				e.preventDefault();
+				/* $("#orgzInfo").submit();
+				//location.href="findSustOrgzList.do";
+				$("#orgzInfo").act */
+
+				$.ajax({
+					"url":"/manage/sustIntro/saveOrgz.do",
+					"data":$("#orgzInfo").serialize(),
+					"type":"post",
+					"success":function(){
+						$("#orgzInfo").attr("action", "./findSustOrgzList.do");
+						$("#orgzInfo").submit();
+					}
+				});
+
+			});
+		}
+	};
+	$(document).ready(function(){
+		_self.init();
+	});
+</script>
+
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+$("#deleteBtn").click(function(e){
+				e.preventDefault();
+				$("#orgzInfo").find("[name$='status']").val("8");
+				/* $.submit({
+					"method":"post",
+					"action":"/manage/sustIntro/saveOrgz.do"
+				},$("#orgzInfo").params()); */
+제이쿼리로 삭제까지만
+
+
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+ajax로 삭제 후 리스트로 돌아가기
+$("#deleteBtn").click(function(e){
+				e.preventDefault();
+				$("#orgzInfo").find("[name$='status']").val("8");
+				$.ajax({
+					"url":"/manage/sustIntro/saveOrgz.do",
+					"data":$("#orgzInfo").serialize(),
+					"type":"post",
+					"success":function(){
+						$("#orgzInfo").attr("action","./findSustOrgzList.do");
+						$("#orgzInfo").submit();
+					}
+				});
+			});
+

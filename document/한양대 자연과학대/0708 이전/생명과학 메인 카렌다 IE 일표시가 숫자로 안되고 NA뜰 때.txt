@@ -1,0 +1,17 @@
+cms-sunmoon-linc 2번  현장실습지원센터 찾아보면 됨 ㅎㅎㅎㅎㅎ
+
+
+
+
+ScheduleService.java
+ - dateInfo.put("start2",info.getStr("sDate2"));
+
+ mysql-schedule.xml
+  - ,DATE_FORMAT(T1.S_DATE,'%Y-%m-%d') AS S_DATE2
+t1은 menu_schedule t1
+
+WebContent - common - 5(해당번호) - js - schedule-index.js
+ - event 자바스크립트에
+date:Date.fromISO($(this).attr('start')),
+이거 밑에다가 
+date:new Date($(this).attr('start2'))

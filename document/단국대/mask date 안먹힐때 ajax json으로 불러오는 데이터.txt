@@ -1,0 +1,14 @@
+/* 교육현장실습 */
+		( function () {
+			var $tabs2Cont = $( "#tabs2 div.group" ).clone();
+			$tabs2Cont.find( ".tpptDt span" ).addClass( "MASK_DATE" );
+			$( "#tabs2 div.group" ).remove();
+			$( "#tabs1 a" ).each( function () {
+				$.getJSON( $( this ).attr( "href" ) ,$( this ).data( "params" ) ,function ( data ) {
+					if ( data.tpAplDscList && data.tpAplDscList.length ) {
+						var $template = $tabs2Cont.clone();
+						$( "#tabs2" ).addRow( $tabs2Cont.clone() ,data.tpAplDscList[ 0 ] );
+					}
+				} );
+			} );
+		} )();

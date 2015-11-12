@@ -1,0 +1,15 @@
+ul_file_lst
+테이블에
+nesv_type
+컬럼추가
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+board.java
+nsevType 게터세터추가
+
+
+insertUlFileLst
+nsevType 추가
+
+
+
+20151111 > 20151112 20151201

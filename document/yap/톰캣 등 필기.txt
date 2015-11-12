@@ -1,0 +1,22 @@
+톰캣 yap context 안에 추가하면 로컬됨
+
+
+<Resource name="jdbc/postgres" auth="Container"
+              type="javax.sql.DataSource"
+              driverClassName="org.postgresql.Driver"
+              url="jdbc:postgresql://61.100.241.161:5432/yap"
+              username="yap" password="yap" maxActive="100" maxIdle="10" maxWait="-1"/>
+
+
+
+웹 was 처리영역
+1. 반응형 // 부트스트랩
+2. jstl -> 리듬템플릿
+
+
+@조심
+
+context.xml
+
+
+

@@ -1,0 +1,10 @@
+var comm={
+	"init":function(object){
+		$(object).find(".NO_RESULT").each(function(){
+			$(this).attr("colspan",$(this).parents("table").find("thead tr:first th").length);
+		});
+	}
+}
+$(document).ready(function(){
+	comm.init($(this));
+});

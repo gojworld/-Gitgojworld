@@ -1,0 +1,8 @@
+<ul>
+	<li>
+		<a href="#tabs1" onclick="location.replace('main.do#tabs1');">MY DKU</a>
+	</li>
+	<li>
+		<a href="#tabs2" onclick="location.replace('main.do#tabs2');">전체 메뉴</a>
+	</li>
+</ul>

@@ -1,0 +1,3 @@
+<a href="javascript:contentPopup(1266,'pop_tit',740)" class="btn_more" >more</a>
+
+교수진 익스 링크

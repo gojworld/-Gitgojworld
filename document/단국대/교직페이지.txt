@@ -1,0 +1,237 @@
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ include file="/WEB-INF/includes/taglibs.jsp"%>
+<script type="text/javascript">
+	$( document ).ready( function () {
+		/* 교육현장실습 */
+		( function () {
+			var $tabs2Cont = $( "#tabs2 div.group" ).clone();
+			$tabs2Cont.find( ".tpptDt span" ).addClass( "MASK_DATE" );
+			$( "#tabs2 div.group" ).remove();
+			$( "#tabs1 a" ).each( function () {
+				$.getJSON( $( this ).attr( "href" ) ,$( this ).data( "params" ) ,function ( data ) {
+					if ( data.tpAplDscList && data.tpAplDscList.length ) {
+						var $template = $tabs2Cont.clone();
+						$( "#tabs2" ).addRow( $tabs2Cont.clone() ,data.tpAplDscList[ 0 ] );
+					}
+				} );
+			} );
+			if ( !$( "#tabs1 a" ).length ) {
+				$( "#tabs2" ).empty().addRow( comm.noResult ,{
+					title : "조회된 데이터가 없습니다."
+				} );
+			}
+		} )();
+		/* 교육봉사 */
+		( function () {
+			var $tabs3Template = $( "#tabs3" ).find( ".group" ).clone();
+			$tabs3Template.find( ".tpptDt span" ).addClass( "MASK_DATE" );
+			$( "#tabs3" ).find( ".group" ).remove();
+			$.ajax( {
+				url : 'univ/proq/teac/views/findTeacSvcDscBasListW.do' ,
+				dataType : 'json' ,
+				success : function ( data ) {
+					$.each( data.svcDscList ,function ( index ,entry ) {
+						console.log( entry.eduSvcYnChk )
+						if ( entry.eduSvcYnChk == '교육봉사' ) {
+							$( "#tabs3" ).addRow( $tabs3Template ,entry );
+						}
+					} );
+					if ( !$( "#tabs3" ).find( "div.group" ).length ) {
+						$( "#tabs3" ).empty().addRow( comm.noResult ,{
+							title : "조회된 데이터가 없습니다."
+						} );
+					}
+				}
+			} );
+		} )();
+		/* 적성, 인성검사 */
+		( function () {
+			var $tabs4Template = $( "#tabs4" ).find( ".group" ).clone();
+			$tabs4Template.find( ".tpptDt span" ).addClass( "MASK_DATE" );
+			$( "#tabs4" ).find( ".group" ).remove();
+			$.ajax( {
+				url : 'univ/proq/teac/views/findPslTestApp.do' ,
+				dataType : 'json' ,
+				success : function ( data ) {
+					$.each( data.tpAplDscList ,function ( index ,entry ) {
+						if ( entry != null ) {
+							$( "#tabs4" ).addRow( $tabs4Template ,entry );
+						}
+					} );
+					if ( !$( "#tabs4" ).find( "div.group" ).length ) {
+						$( "#tabs4" ).empty().addRow( comm.noResult ,{
+							title : "조회된 데이터가 없습니다."
+						} );
+					}
+				}
+			} );
+		} )();
+	} );
+</script>
+<div class="tabs tabs_type03 line_blue bgt_wrap">
+	<ul class="slice04">
+		<li>
+			<a href="#tabs1" class="tab1">교직전공</a>
+		</li>
+		<li>
+			<a href="#tabs2" class="tab2">교육현장실습</a>
+		</li>
+		<li>
+			<a href="#tabs3" class="tab3">교육봉사</a>
+		</li>
+		<li>
+			<a href="#tabs4" class="tab4">적성/인성검사</a>
+		</li>
+	</ul>
+	<div id="tabs1">
+		<div class="group">
+			<div>
+				<c:choose>
+					<c:when test="${!empty tpPdstList}">
+						<c:forEach var="tpPdst" items="${tpPdstList}" varStatus="loop">
+							<div class="tbl_line tbl_row">
+								<table>
+									<caption>교직전공</caption>
+									<colgroup>
+										<col style="width: 40%" />
+										<col />
+									</colgroup>
+									<tbody>
+										<tr>
+											<th scope="row" class="ta_c">전공구분</th>
+											<td class="ta_c">
+												<a href="univ/proq/teac/findTpAplDscList.do" data-params='{"tpMjCd": "${tpPdst.tpMjCd}","stuid": "${tpPdst.stuid}","tpAplCd": "0003","webLogin": "web"}'>${tpPdst.tpMjNm}</a>
+											</td>
+										</tr>
+										<tr>
+											<th scope="row" class="ta_c">전공소속</th>
+											<td class="ta_c">${tpPdst.orgzNm}</td>
+										</tr>
+										<tr>
+											<th scope="row" class="ta_c">자격구분</th>
+											<td class="ta_c">${tpPdst.tpQualTyNm}</td>
+										</tr>
+										<tr>
+											<th scope="row" class="ta_c">표시과목</th>
+											<td class="ta_c">${tpPdst.dispySbjNm}</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</c:forEach>
+					</c:when>
+					<c:otherwise>
+						<div class="box_empty">
+							<p class="tit">조회된 데이터가 없습니다.</p>
+						</div>
+					</c:otherwise>
+				</c:choose>
+			</div>
+		</div>
+	</div>
+	<div id="tabs2">
+		<div class="group">
+			<div>
+				<div class="tbl_line tbl_row">
+					<table>
+						<caption>교육현장실습</caption>
+						<colgroup>
+							<col style="width: 40%" />
+							<col />
+						</colgroup>
+						<tbody>
+							<tr>
+								<th scope="row" class="ta_c">전공구분</th>
+								<td class="ta_c">{tpMjNm}</td>
+							</tr>
+							<tr>
+								<th scope="row" class="ta_c">실습학교(기관)</th>
+								<td class="ta_c">{tpptInstNm}</td>
+							</tr>
+							<tr>
+								<th scope="row" class="ta_c">실습기간</th>
+								<td class="ta_c tpptDt">
+									<span>{tpptFrDt}</span>
+									~
+									<span>{tpptToDt}</span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="tabs3">
+		<div class="group">
+			<div>
+				<div class="tbl_line tbl_row">
+					<table>
+						<caption>교육봉사</caption>
+						<colgroup>
+							<col style="width: 40%" />
+							<col />
+						</colgroup>
+						<tbody>
+							<tr>
+								<th scope="row" class="ta_c">기관명</th>
+								<td class="ta_c">{svcInstNm}</td>
+							</tr>
+							<tr>
+								<th scope="row" class="ta_c">봉사내용</th>
+								<td class="ta_c">{svcCont}</td>
+							</tr>
+							<tr>
+								<th scope="row" class="ta_c">봉사기간</th>
+								<td class="ta_c tpptDt">
+									<span>{svcFrDtw}</span>
+									~
+									<span>{svcToDtw}</span>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row" class="ta_c">봉사시간</th>
+								<td class="ta_c">{svcTm}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="tabs4">
+		<div class="group">
+			<div>
+				<div class="tbl_line tbl_row">
+					<table>
+						<caption>적성/인성검사</caption>
+						<colgroup>
+							<col style="width: 40%" />
+							<col />
+						</colgroup>
+						<tbody>
+							<tr>
+								<th scope="row" class="ta_c">응시년도학기</th>
+								<td class="ta_c">{yy} - {semCd}</td>
+							</tr>
+							<tr>
+								<th scope="row" class="ta_c">신청일자</th>
+								<td class="ta_c tpptDt">
+									<span>{tpAplDt}</span>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row" class="ta_c">결시여부</th>
+								<td class="ta_c">{psnlAptitTkexYnChk}</td>
+							</tr>
+							<tr>
+								<th scope="row" class="ta_c">적격여부</th>
+								<td class="ta_c">{tpptReCk}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,10 @@
+$.ajax( {
+						"url" : "comm/syst/notc/saveBoardBasMo.do" ,
+						"data" : $( "#notc" ).serialize() ,
+						"type" : "post" ,
+						"dataType" : "json" ,
+						"success" : function ( result ) {
+							alert( "저장되었습니다." );
+							location.reload();
+						}
+					} )

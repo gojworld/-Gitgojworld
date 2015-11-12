@@ -1,0 +1,25 @@
+<database>
+	<jndi-name>jdbc/tisDS</jndi-name>
+	<driver type="oracle.jdbc.driver.OracleDriver">
+		<url>jdbc:oracle:thin:@//172.25.140.11:1521/TIS</url>
+		<user>DKU_AP</user>
+		<password>DKU_AP0722</password>
+	</driver>
+	<prepared-statement-cache-size>8</prepared-statement-cache-size>
+	<max-connections>20</max-connections>
+	<max-idle-time>30s</max-idle-time>
+</database>
+
+
+
+<database>
+	<jndi-name>jdbc/tisDS</jndi-name>
+	<driver type="oracle.jdbc.driver.OracleDriver">
+		<url>jdbc:oracle:thin:@//172.25.131.23:1521/TISD</url>
+		<user>DKU_AP</user>
+		<password>DKU_AP0616</password>
+	</driver>
+	<prepared-statement-cache-size>8</prepared-statement-cache-size>
+	<max-connections>20</max-connections>
+	<max-idle-time>30s</max-idle-time>
+</database>

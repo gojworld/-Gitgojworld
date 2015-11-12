@@ -1,0 +1,16 @@
+<select id="findBachSchedList" parameterType="kr.dku.etcs.ptal.web.PtalSearch" resultType="CamelCaseMap">
+    	SELECT
+    		vme.eventId
+    		,vme.title
+    		,vme.content
+    		,vme.beginDate
+    		,vme.endDate
+    	FROM
+        	port.v_mobile_event vme
+        WHERE
+      		SUBSTR(vme.beginDate,0,4) = #{year}
+       	ORDER BY
+       		beginDate ASC
+       		,endDate ASC
+       		,eventId DESC
+    </select>

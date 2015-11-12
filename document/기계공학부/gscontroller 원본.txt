@@ -1,0 +1,125 @@
+package controller.manage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import system.jstl.pagination.PaginationInfo;
+import system.myMap.MyMap;
+import syworks.orgz.domain.Orgz;
+import syworks.orgz.service.OrgzService;
+/**
+ * 관리자 = > 대학원
+ *
+ * @author usrpark
+ */
+@Controller
+@RequestMapping("/manage/gs")
+public class GsController{
+	@Autowired
+	private OrgzService orgzService;
+	@ModelAttribute("paramMap")
+	public MyMap getParamMap(MyMap paramMap){
+		return paramMap;
+	}
+	/**
+	 * 대학원 => 등록폼
+	 *
+	 * @return
+	 */
+	@RequestMapping(value="/views/findGsCmnForm.do")
+	public String findUsMachEngrgForm(MyMap paramMap,Model model){
+		model.addAttribute("orgzInfo",orgzService.findOrgzInfo(paramMap));
+		return "/manage/gs/findGsCmnForm";
+	}
+	/**
+	 * 대학원 => 등록
+	 *
+	 * @return
+	 */
+	@RequestMapping(value="/saveGs.do")
+	public void saveOrgz(Orgz orgz,Model model){
+		orgzService.saveOrgz(orgz);
+	}
+	/**
+	 * 융합기계공학과 => 리스트
+	 *
+	 * @return
+	 */
+	@RequestMapping(value="/views/findUsMachEngrgList.do")
+	public String findUsMachEngrgList(MyMap paramMap,Model model){
+		paramMap.put("menuCd","gs");
+		paramMap.put("catCd",paramMap.getString("catCd","1"));
+		PaginationInfo paginationInfo=new PaginationInfo();
+		paginationInfo.setCurrentPageNo(paramMap.getInt("page"));
+		paginationInfo.setTotalRecordCount(orgzService.findOrgzCount(paramMap));
+		paramMap.put("paginationInfo",paginationInfo);
+		model.addAttribute("paramMap",paramMap);
+		model.addAttribute("orgzList",orgzService.findOrgzList(paramMap));
+		return "/manage/gs/findUsMachEngrgList";
+	}
+	/**
+	 * 융합기계공학과 => 상세정보
+	 *
+	 * @return
+	 */
+	@RequestMapping(value="/views/findUsMachEngrgInfo.do")
+	public String findUsMachEngrgInfo(MyMap paramMap,Model model){
+		model.addAttribute("orgzInfo",orgzService.findOrgzInfo(paramMap));
+		return "/manage/gs/findUsMachEngrgInfo";
+	}
+	/**
+	 * 기계공학과 => 리스트
+	 *
+	 * @return
+	 */
+	@RequestMapping(value="/views/findMachEngrgDptList.do")
+	public String findMachEngrgDptList(MyMap paramMap,Model model){
+		paramMap.put("menuCd","gs");
+		paramMap.put("catCd","42");
+		PaginationInfo paginationInfo=new PaginationInfo();
+		paginationInfo.setCurrentPageNo(paramMap.getInt("page"));
+		paginationInfo.setTotalRecordCount(orgzService.findOrgzCount(paramMap));
+		paramMap.put("paginationInfo",paginationInfo);
+		model.addAttribute("paramMap",paramMap);
+		model.addAttribute("orgzList",orgzService.findOrgzList(paramMap));
+		return "/manage/gs/findMachEngrgDptList";
+	}
+	/**
+	 * 기계공학과 => 상세정보
+	 *
+	 * @return
+	 */
+	@RequestMapping(value="/views/findMachEngrgDptInfo.do")
+	public String findMachEngrgDptInfo(MyMap paramMap,Model model){
+		model.addAttribute("orgzInfo",orgzService.findOrgzInfo(paramMap));
+		return "/manage/gs/findMachEngrgDptInfo";
+	}
+	/**
+	 * 자동차공학과 => 리스트
+	 *
+	 * @return
+	 */
+	@RequestMapping(value="/views/findVehEngrgDptList.do")
+	public String findVehEngrgDptList(MyMap paramMap,Model model){
+		paramMap.put("menuCd","gs");
+		paramMap.put("catCd","43");
+		PaginationInfo paginationInfo=new PaginationInfo();
+		paginationInfo.setCurrentPageNo(paramMap.getInt("page"));
+		paginationInfo.setTotalRecordCount(orgzService.findOrgzCount(paramMap));
+		paramMap.put("paginationInfo",paginationInfo);
+		model.addAttribute("paramMap",paramMap);
+		model.addAttribute("orgzList",orgzService.findOrgzList(paramMap));
+		return "/manage/gs/findVehEngrgDptList";
+	}
+	/**
+	 * 자동차공학과 => 상세정보
+	 *
+	 * @return
+	 */
+	@RequestMapping(value="/views/findVehEngrgDptInfo.do")
+	public String findVehEngrgDptInfo(MyMap paramMap,Model model){
+		model.addAttribute("orgzInfo",orgzService.findOrgzInfo(paramMap));
+		return "/manage/gs/findVehEngrgDptInfo";
+	}
+}

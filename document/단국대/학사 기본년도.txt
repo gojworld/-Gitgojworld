@@ -1,0 +1,40 @@
+공통년도 가져와서 뿌리는거(학사)
+private MesgService mesgService;
+
+@Autowired
+public void setMesgService(MesgService mesgService) {
+	this.mesgService = mesgService;
+}
+
+/**
+ * 학사 기본년도학기정보(콤보박스추가)
+ * 싸이웍스 박주원PRO
+ * */
+if(WebUtils.isRequestedMobile()){
+	model.addAttribute("basInfo", mesgService.findBasInfoAddYearList());
+}
+
+
+<div class="f_l w_49 mr_5">
+	<span class="form_select">
+		<form:select path="yy" class="chosen-select" data-placeholder="년도">
+			<form:options items="${basInfo.yyList}" />
+		</form:select>
+	</span>
+</div>
+
+
+private MemberService memberService;
+
+@Autowired
+public void setMemberService(MemberService memberService) {
+	this.memberService = memberService;
+}
+
+/**
+ * 모바일 사진
+ * 싸이웍스 박주원PRO
+ * */
+if(WebUtils.isRequestedMobile()){
+	model.addAttribute("memberPhoto", memberService.findMemberPhoto(SecurityContextHelper.getUserDetails().getAcctInfoId()));
+}

@@ -1,0 +1,236 @@
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="fn" uri="fnLibrary"%>
+<script type="text/javascript">
+	var _self={
+		"init":function(){
+			$(".goBtn1").click(function(e){
+				e.preventDefault();
+				$.submit({
+					"method":"post",
+					"action":"/service/sust/views/findSustHistoryInfo.do"
+				});
+			});
+			$(".goBtn2").click(function(e){
+				e.preventDefault();
+				$.submit({
+					"method":"post",
+					"action":"/service/edu/engd/views/findEngDivrsnSbjInfo.do"
+				});
+			});
+			$(".goBtn3").click(function(e){
+				e.preventDefault();
+				$.submit({
+					"method":"post",
+					"action":"/service/edu/sbjt/views/findEduList.do"
+				});
+			});
+			$(".goBtn4").click(function(e){
+				e.preventDefault();
+				$.submit({
+					"method":"post",
+					"action":"/service/gs/mach/views/findGsList.do"
+				});
+			});
+			$(".goBtn5").click(function(e){
+				e.preventDefault();
+				$.submit({
+					"method":"post",
+					"action":"/service/gs/fuse/views/findGsList.do"
+				});
+			});
+			$(".goBtn6").click(function(e){
+				e.preventDefault();
+				$.submit({
+					"method":"post",
+					"action":"/service/gs/vehe/views/findGsList.do"
+				});
+			});
+		}
+	};
+	$(document).ready(function(){
+		_self.init();
+	});
+</script>
+<div class="bg_wrap">
+	<div class="section">
+		<div class="main_con mt_50">
+			<c:choose>
+				<c:when test="${!empty mainList}">
+					<c:forEach var="main" items="${mainList}" varStatus="loop">
+						<div class="con01">
+							<div class="box mt_15 ml_15">
+								<a href="/service/ne/news/views/findNewsList.do"><h5 class="mb_15">Recent News</h5></a>
+								<img src="/common/css/images/main/main_con01.jpg" alt="news" />
+								<p class="tit mt_15">${main.newsLastTtl}</p>
+								<p class="ls_5 mt_10">${main.newsLastCont}</p>
+							</div>
+						</div>
+					</c:forEach>
+				</c:when>
+			</c:choose>
+			<c:choose>
+				<c:when test="${!empty mainList}">
+					<c:forEach var="main" items="${mainList}" varStatus="loop">
+						<div class="con02">
+							<div class="box ">
+								<a href="/service/cmnt/gsan/views/findCmntList.do"><h5 class="mt_15">
+										대학원 공지<em>${main.gsanLastTtl}</em>
+									</h5></a>
+								<p class="date01">2015. 06. 02</p>
+								<p>${main.gsanLastCont}</p>
+							</div>
+						</div>
+					</c:forEach>
+				</c:when>
+			</c:choose>
+			<c:choose>
+				<c:when test="${!empty mainList}">
+					<c:forEach var="main" items="${mainList}" varStatus="loop">
+						<div class="con03">
+							<div class="box mt_15 ml_15">
+								<a href="/service/ne/even/views/findEventList.do"><h5 class=" mb_15">Featured Events</h5></a>
+								<img src="/common/css/images/main/main_con03.jpg" alt="news" />
+								<p class="tit mt_15">${main.evenLastTtl}</p>
+								<p class="ls_5 mt_10">${main.evenLastCont}</p>
+							</div>
+						</div>
+					</c:forEach>
+				</c:when>
+			</c:choose>
+			<div class="con04">
+				<a href=""><h5>QUICK MENU</h5></a>
+				<ul class="mt_20">
+					<li>
+						<a href="#" class="goBtn1"><img src="/common/css/images/main/main_con04_01.gif" alt="news" /><em>학부연혁</em></a>
+					</li>
+					<li class="lst02">
+						<a href="#" class="goBtn2"><img src="/common/css/images/main/main_con04_02.gif" alt="news" /><em>영어전용 과목</em></a>
+					</li>
+					<li>
+						<a href="#" class="goBtn3"><img src="/common/css/images/main/main_con04_03.gif" alt="news" /><em>교과과정</em></a>
+					</li>
+					<li>
+						<a href="#" class="goBtn4"><img src="/common/css/images/main/main_con04_04.gif" alt="news" /><em>기계공학과</em></a>
+					</li>
+					<li class="lst02">
+						<a href="#" class="goBtn5"><img src="/common/css/images/main/main_con04_05.gif" alt="news" /><em>융합기계공학과</em></a>
+					</li>
+					<li>
+						<a href="#" class="goBtn6"><img src="/common/css/images/main/main_con04_06.gif" alt="news" /><em>자동차공학과</em></a>
+					</li>
+				</ul>
+			</div>
+			<c:choose>
+				<c:when test="${!empty mainList}">
+					<c:forEach var="main" items="${mainList}" varStatus="loop">
+						<div class="con05">
+							<div class="box ml_20 mt_25">
+								<h6>
+									학부공지<em>${main.suanLastTtl}</em>
+								</h6>
+								<p class="date01">2015. 06. 12</p>
+								<p>${main.suanLastCont}</p>
+							</div>
+						</div>
+					</c:forEach>
+				</c:when>
+			</c:choose>
+			<!-- 멘토링 및 취업게시판 -->
+			<div class="con06">
+				<div class="box mt_15">
+					<a href="/service/cmnt/ment/views/findCmntList.do"><h5 class="mb_15">멘토링 및 취업게시판</h5></a>
+					<img src="/common/css/images/main/main_con06.jpg" alt="news" />
+					<p class="tit mt_15">[세미나실 예약방법변경 안내]</p>
+					<p class="ls_5 mt_5">2학기가 시작하는 9월달 부터 세미나 사용신청방법을 변경할 예정입니다. 많은 학생들의 신청과 너무나..</p>
+				</div>
+			</div>
+			<!-- 멘토링 및 취업게시판 -->
+			<!-- 학생회공지 -->
+			<div class="con07">
+				<div class="box ml_20 mt_15">
+					<a href="/service/cmnt/stan/views/findCmntList.do"><h6>
+							학생회공지<em>논문제출안내 및 교원업적평가</em>
+						</h6> </a>
+					<p class="date01">2015. 06. 12</p>
+					<p>
+						2010009611 김*율 학생을 제외한<br /> 모든 학생이 종합설계 합격<br /> 전에 안내해드린 논문제출 양식에<br /> 맞추어 제출해주시길 바랍니다.
+					</p>
+				</div>
+			</div>
+			<!-- 학생회공지 -->
+			<div class="con08 slider">
+				<ul>
+					<li>
+						<div class="box">
+							<p class="top">HOME OF MECHAICAL ENGINEERING</p>
+							<P class="tit">
+								<em>ENGINEERING</em> CENTER
+							</P>
+							<p class="tit02">"변치 않는 명성, 한양대학교 기계공학부"</p>
+							<p class="txt">
+								미래를 주도하는 창조적인 실용인재 육성, 성장동력의<br /> 자부심, 한양대학교 기계공학부
+							</p>
+						</div>
+					</li>
+					<li>
+						<div class="box">
+							<p class="top">HOME OF MECHAICAL ENGINEERING</p>
+							<P class="tit">
+								<em>ENGINEERING</em> CENTER
+							</P>
+							<p class="tit02">"변치 않는 명성, 한양대학교 기계공학부"</p>
+							<p class="txt">
+								미래를 주도하는 창조적인 실용인재 육성, 성장동력의<br /> 자부심, 한양대학교 기계공학부
+							</p>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="con09 slider slider02">
+				<p>안내바로가기</p>
+				<p class="count">/ 5</p>
+				<ul>
+					<li>
+						<a href=""><img src="/common/css/images/main/con09_01.gif" alt="공학인증서비스" /></a>
+					</li>
+					<li>
+						<a href=""><img src="/common/css/images/main/con09_01.gif" alt="공학인증서비스" /></a>
+					</li>
+					<li>
+						<a href=""><img src="/common/css/images/main/con09_01.gif" alt="공학인증서비스" /></a>
+					</li>
+					<li>
+						<a href=""><img src="/common/css/images/main/con09_01.gif" alt="공학인증서비스" /></a>
+					</li>
+					<li>
+						<a href=""><img src="/common/css/images/main/con09_01.gif" alt="공학인증서비스" /></a>
+					</li>
+				</ul>
+			</div>
+			<div class="con10 slider">
+				<p>관련사이트</p>
+				<p class="count">/ 5</p>
+				<ul>
+					<li>
+						<a href=""><img src="/common/css/images/main/con10_01.gif" alt="한국장학재단" /></a>
+					</li>
+					<li>
+						<a href=""><img src="/common/css/images/main/con10_01.gif" alt="한국장학재단" /></a>
+					</li>
+					<li>
+						<a href=""><img src="/common/css/images/main/con10_01.gif" alt="한국장학재단" /></a>
+					</li>
+					<li>
+						<a href=""><img src="/common/css/images/main/con10_01.gif" alt="한국장학재단" /></a>
+					</li>
+					<li>
+						<a href=""><img src="/common/css/images/main/con10_01.gif" alt="한국장학재단" /></a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

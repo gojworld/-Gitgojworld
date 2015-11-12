@@ -1,0 +1,166 @@
+
+
+
+
+
+
+
+
+
+
+한군데 입력하면 모두같이 입력되게
+"deptNumKeyUp":function(){
+	$("input[name=expeNum]").each(function(){
+		$(this).val($("#expeNumAll").val());
+	});
+},
+체크박스 클릭하면 모두체크 / 반대로 모두해제
+"chkAll":function(obj){
+	alert($(obj).is(":checked"));
+	$("input[name=deptSeq]").each(function(){
+		$(this).prop("checked", $(obj).is(":checked"));
+	});
+},
+
+
+jsp파일에서 파라미터값 읽어오기
+<%= request.getParameter("expeSeq")%>  ==> expeSeq 는 파라미터명(파라미터로 날아오는 변수등)
+
+메인 메뉴 url 비교 (네비게이터 xml)
+<c:if test="${mainMenu.url eq '/service/mstrPage/views/findMstrMainLstList.do'}">
+
+페이징 개수 갯수 정하기
+paginationInfo.setRecordCountPerPage(paramMap.getInt("recordCountPerPage",6));
+
+셀렉트 박스 게시판 리스트 정렬하기
+<if test="@system.mybatis.Util@isNotEmpty( sort )">
+	${sort} DESC
+</if>
+<if test="@system.mybatis.Util@isEmpty( sort )">
+	CONT_SEQ DESC
+</if>
+DB에 order by에 추가해주고
+jsp 페이지에 
+<form id="searchForm" name="searchForm" action="/service/contPage/views/findContMainLstList.do">
+	<div class="cont_src_bx">
+		<select class="sel_form" id="sel_form" name="sort">
+			<option value="CONT_SEQ" <c:if test="${paramMap.sort eq 'CONT_SEQ'}">selected</c:if>>최신순</option>
+			<option value="INQ_CNT" <c:if test="${paramMap.sort eq 'INQ_CNT'}">selected</c:if>>조회순</option>
+		</select>
+	</div>
+</form>
+자바스크립트 부분도 추가
+var _self={
+	"init":function(){
+		$(".btn_srch").click(function(e){
+			$.submit({
+				"method":"get",
+				"action":"/service/find.do"
+			},{
+				"sort":'${paramMap.sort}'
+			});
+		});
+	},
+	"page":function(page){
+		$.submit({
+			"method":"post",
+			"action":"./findContMainLstList.do"
+		},{
+			"page":page,
+			"sort":'${paramMap.sort}'
+		});
+	}
+};
+
+아이디값 찾기
+alert($(this).parents("li").attr("id"));
+
+몇번째 꺼에만 css class 먹이기
+<li class="${loop.count%3 eq '0' ? 'last' : '' }">
+
+페이징 개수 정해주기 리스트 컨트롤러에 추가
+paginationInfo.setRecordCountPerPage(paramMap.getInt("recordCountPerPage",6));
+
+&lt;br&gt;(xml 줄바꿈 명령)
+
+- 코드값 가져오기 (case when then 대신 쓰면됨)
+${fn:commCodeValue('PRS_CAT_CD',orgz.catCd)}
+- 코드값 콤보박스 생성
+
+- 저장발리데이션 에이작스
+세이브버튼 js밑에 프리벤트디폴트 아래에 추가
+if(!$orgzInfo.validate()) return false;
+
+- xml include
+<mapper namespace="syworks.orgz.repository.OrgzRepository">
+	<sql id="findOrgzWhere">
+		WHERE
+			1=1
+			AND MENU_CD = #{menuCd}
+			<if test="@system.mybatis.Util@isNotEmpty( catCd )">
+				AND CAT_CD = #{catCd}
+			</if>
+			<if test="@system.mybatis.Util@isNotEmpty( searchVal )">
+				<choose>
+					<when test='searchType=="1"'>
+						AND NM LIKE CONCAT('%',#{searchVal},'%')
+					</when>
+					<when test='searchType=="2"'>
+						AND SXN_NM LIKE CONCAT('%',#{searchVal},'%')
+					</when>
+					<otherwise>
+						AND (
+						NM LIKE CONCAT('%',#{searchVal},'%')
+						OR SXN_NM LIKE CONCAT('%',#{searchVal},'%')
+						)
+					</otherwise>
+				</choose>
+			</if>
+	</sql>
+----> <include refid="syworks.orgz.repository.OrgzRepository.findOrgzWhere"/>
+
+-페이지당 보여주는 리스트 (페이지인포)
+paginationInfo.setRecordCountPerPage(paramMap.getInt("recordCountPerPage",6));
+
+- 발리데이션
+{'required':true} 
+{'ime':'tel'}
+
+- 파라미터 menuCd값을 등록할 때 menuCd로 삽입
+e.preventDefault();
+	var $form=$("#boardInfo");
+	$boardInfo.find("#menuCd").val("${menuCd}");
+
+- 필수값 빨강색
+<span class="required">*</span>
+.required{color: red;}
+
+- 공지일반라벨버튼
+<th>공지여부</th>
+<td>
+	<form:radiobutton path="anncYn" id="anncY" value="Y" />
+	<label for="anncY">공지</label>&nbsp;
+	<form:radiobutton path="anncYn" id="anncN" value="N" />
+	<label for="anncN">일반</label>
+</td>
+
+- 컬럼 표시
+${boardInfo.cont ? boardInfo.cont : '-'} 대신 사용
+cld 추가하고 등등
+<tr>
+	<th>내용</th>
+	<td>${fn:nvl(boardInfo.cont,'-')}</td>
+</tr>
+
+- now()표시 바꾸기
+${fn:dateFormat(board.inputDm,'yy.MM.dd')}
+
+<tr>
+	<th>국문/영문</th>
+	<td>
+		<form:radiobutton path="langNm" id="langNm" value="1" />
+		<label for="langNm">영문</label>&nbsp;
+		<form:radiobutton path="langNm" id="langNm" value="0" />
+		<label for="langNm">국문</label>
+	</td>
+</tr>

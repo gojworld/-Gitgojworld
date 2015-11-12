@@ -1,0 +1,112 @@
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ include file="/WEB-INF/includes/taglibs.jsp"%>
+<script type="text/javascript">
+	$(document).ready(function(){
+		var category={
+			"공통":"gray",
+			"죽전":"blue",
+			"천안":"green"
+		};
+		var $vocInfoTemplate=$("#voc_info_template").clone();
+		var url="vocm/findMannDetail.do";
+		var params;
+		$("#voc_info_template").remove();
+		$(".list_notice a").click(function(){
+			params=$(this).data("params");
+			$.getJSON(url,params,function(data){
+				console.log(data);
+				if(data.recv){
+					var $vocInfo=$vocInfoTemplate.clone();
+					if(!data.attachFile) $vocInfo.find(".file_download").remove();
+					$vocInfo.bindParams($.extend(data.recv,{
+						"color":category[data.recv.vocCampNm],
+						"fileNm":data.attachFile?data.attachFile.fileNm:"",
+						"fileSeq":data.attachFile?data.attachFile.fileSeq:"",
+						"fileCdval":data.attachFile?data.attachFile.fileCdval:""
+					})).layout({
+						"title":"공지사항 상세보기"
+					});
+				}else{
+					alert("해당 정보를 가져올 수 없습니다.");
+				}
+			});
+		});
+		$(".list_notice a:eq(1)").click();
+	});
+</script>
+<div class="notice_wrap voc_wrap">
+	<form:form modelAttribute="vocmWebSearch" method="post" action="vocm/findMannList.do" class="form-inline" data-role="search" data-message="alert">
+		<div class="search_wrap">
+			<ul>
+				<li>
+					<span class="form_select">
+						<form:select path="vocCampCd" class="chosen-select">
+							<option value="">전체</option>
+							<form:options items="${vocCampCdList}" itemValue="cmnCdval" itemLabel="cmnCdvalNm" />
+						</form:select>
+					</span>
+				</li>
+				<li>
+					<button class="btn gray02">SEARCH</button>
+				</li>
+			</ul>
+		</div>
+	</form:form>
+	<div class="group">
+		<div class="tit_group">
+			<h3>검색 결과</h3>
+			<strong class="num_result">
+				[검색결과
+				<span>${vocmWebSearch.pagination.totalRecordCount}</span>
+				건]
+			</strong>
+		</div>
+		<ul class="list_notice">
+			<c:choose>
+				<c:when test="${!empty recvList}">
+					<c:forEach var="vocRecv" items="${recvList}" varStatus="loop">
+						<li>
+							<a href="#" data-params='{"recvSeq": "${vocRecv.recvSeq}", "scrtWrtiYn": "${vocRecv.scrtWrtiYn}", "wrirId": "${vocRecv.wrirId}"}'>
+								<c:if test="${vocRecv.vocClsfNm eq '죽전'}">
+									<strong class="cdt blue">${vocRecv.vocClsfNm}</strong>
+								</c:if>
+								<c:if test="${vocRecv.vocClsfNm eq '천안'}">
+									<strong class="cdt green">${vocRecv.vocClsfNm}</strong>
+								</c:if>
+								<c:if test="${vocRecv.vocClsfNm eq '공통'}">
+									<strong class="cdt gray">공통</strong>
+								</c:if>
+								<strong class="fc_gray">${vocRecv.wriDm}</strong>
+								<br />
+								<strong>${vocRecv.ttl}</strong>
+							</a>
+						</li>
+					</c:forEach>
+				</c:when>
+				<c:otherwise>
+					<div class="box_empty">
+						<p class="tit">조회된 데이터가 없습니다.</p>
+					</div>
+				</c:otherwise>
+			</c:choose>
+		</ul>
+	</div>
+</div>
+<div id="voc_info_template" style="display: none;">
+	<div class="notice_wrap voc_wrap">
+		<div class="box_blue">
+			<strong class="cdt {color}">{vocCampNm}</strong>
+			<strong class="fc_gray">{wriDm}</strong>
+			<br />
+			<h3>{ttl}</h3>
+		</div>
+		<div class="cont">{vocCont}</div>
+		<div class="box_gray file_download">
+			<strong class="fc_gray02">첨부파일: </strong>
+			<a href="comm/syst/file/download.do?fileSeq={fileSeq}&fileCdval={fileCdval}" class="ico_down td_under">{fileNm}</a>
+		</div>
+		<div class="btn_wrap">
+			<a href="#" class="btn gray02 LAYOUT_CLOSE_BTN">목록보기</a>
+		</div>
+	</div>
+</div>

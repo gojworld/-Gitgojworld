@@ -1,0 +1,8 @@
+첨부파일 없는데 있다고 나올 때(ASP)
+<% IF pdsxfile <> "" THEN%>
+	<tr class="ctntxt">
+		<td height="28" align="right" valign="middle">첨부파일</td>
+		<td height="28">&nbsp;</td>
+		<td height="28" colspan="3"><img src="../images/common/ico_attach.gif" width="20" height="20" hspace="3" align="absmiddle"><a href="/pds_file/<%=pdsxfile%>" target="_blank"><%=pdsxfile%></a></td>
+	</tr>
+<% END IF%>

@@ -1,0 +1,19 @@
+$("#regsBtn").click(function(e){
+	e.preventDefault();
+	$.submit({
+		"method":"get",
+		"action":"./findSbjtCrsForm.do"
+	});
+});
+
+
+
+
+
+
+
+<ul class="btn_wrap">
+	<li>
+		<a href="#" id="regsBtn">등록</a>
+	</li>
+</ul>

@@ -1,0 +1,115 @@
+<form:select path="yy" class="chosen-select" data-placeholder="년도" data-inputmask-clearmaskonlostfocus="false" >
+	<form:options items="${basInfo.yyList}" />
+</form:select>
+data-inputmask-clearmaskonlostfocus="false"
+
+
+
+
+
+
+/**
+     * 회의실대여신청기본을(를) 조회한다(개인 신청 web).
+     * @param lendAplNb 대여신청번호
+     */
+    @RequestMapping(value = "/views/findFacsUseApWeblList.do")
+    public String findFacsUseApWeblList(FaciLendSearch faciLendSearch, Model model) {
+    	String yyMm = faciLendSearch.getYear() + faciLendSearch.getMonth();
+    	String year = faciLendSearch.getYear();
+
+    	if(year == "null" || year == "" || year == null ){
+    	    Format CONVERSION = new SimpleDateFormat("yyyyMM", Locale.KOREA);
+    		faciLendSearch.setYyMm(CONVERSION.format(new Date()));
+    		CONVERSION = new SimpleDateFormat("yyyy", Locale.KOREA);
+    		faciLendSearch.setYear(CONVERSION.format(new Date()));
+    		CONVERSION = new SimpleDateFormat("MM", Locale.KOREA);
+    		faciLendSearch.setMonth(CONVERSION.format(new Date()));
+    	}else{
+    		faciLendSearch.setYyMm(yyMm);
+    	}
+
+    	UserDetails userDetails = SecurityContextHelper.getUserDetails();
+    	faciLendSearch.setAplcId(userDetails.getIntgUid()); //사용자
+    	List<CamelCaseMap> lendAplBasList = faciLendService.findFacsUseApWeblList(faciLendSearch);
+    	PaginationUtils.bindTotalRecordCount(faciLendSearch.getPagination(), lendAplBasList, "totCnt"); //페이징처리
+    	model.addAttribute("lendAplBasList", lendAplBasList);
+
+    	/**
+    	 * 학사 기본년도학기정보(콤보박스추가)
+    	 * 싸이웍스 박주원PRO
+    	 * */
+    	if(WebUtils.isRequestedMobile()){
+    		model.addAttribute("basInfo", mesgService.findBasInfoAddYearList());
+    	}
+
+    	return "admi/faci/facsUseApWeblList";
+    }
+
+
+
+$(document).ready(function(){
+<%-- 초기값 및 타입 설정  --%>
+	$("#year").inputmask("9999");
+		var nowDate=new Date();
+		var yyMm="${faciLendSearch.yyMm}";
+		var year="${faciLendSearch.year}";
+		var month="${faciLendSearch.month}";
+<%-- 초기값 셋팅 --%>
+	$("#year").val(year);
+		$("#month").val(month);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+     * 월별강사료을(를) 조회한다. (WEB)
+     * @param yy 년도
+     * @param pymtMm 지급월
+     * @param pfltId 사번
+     */
+    @RequestMapping(value = "/views/findMonthPymtDscList.do")
+    public String findMonthPymtDscList(LfpmSearch lfpmSearch, Model model) {
+    	/**
+    	 * 학사 기본년도학기정보(콤보박스추가)
+    	 * 싸이웍스 박영조SP
+    	 * */
+    	if(WebUtils.isRequestedMobile()){
+    		model.addAttribute("basInfo", mesgService.findBasInfoAddYearList());
+    	}
+		// 사용자 아이디
+    	UserDetails userDetails = SecurityContextHelper.getUserDetails();
+    	String intgUid = userDetails.getIntgUid();
+
+    	lfpmSearch.setPfltId(intgUid);
+		if (lfpmSearch.getYy()==null && lfpmSearch.getSemCd()==null) {
+		//	CamelCaseMap cm = utilService.findCurrentDate("YYYY-MM-DD"); //서버시간
+			CamelCaseMap cm = lfpmService.findYySemCd(lfpmSearch); //서버시간
+
+			lfpmSearch.setYy(cm.get("yy").toString());
+			lfpmSearch.setPymtMm(cm.get("pymtMm").toString());
+		}
+
+        model.addAttribute("monthPymtDscListLinkage", lfpmService.findMonthPymtDscList(lfpmSearch));
+        return "univ/lssn/lfpm/monthPymtDscForm";
+    }

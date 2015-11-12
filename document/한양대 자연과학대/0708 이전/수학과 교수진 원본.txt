@@ -1,0 +1,296 @@
+<h3 class="contents_title">전임교수</h3>
+<div class="pro_wrap">
+	<ul>
+		<li>
+			<div class="pro_cont">
+				<div class="fl">
+					<div class="pro_pic"><img src="/common/2/css/images/pro/pic4.jpg" alt="장주섭" /></div>
+					<div><a href="#" class="btn_home">Homepage</a></div>
+				</div>
+				<div class="fr">
+					<div class="pro_name"><strong>장주섭</strong>교수</div>
+					<ul class="item_list">
+						<li><span class="item">POSITION</span>교수</li>
+						<li><span class="item">TEL</span>02-2220-0901</li>
+						<li><span class="item">E-MAIL</span><a href="mailto:jschang@hanyang.ac.kr">jschang@hanyang.ac.kr</a></li>
+						<li><span class="item">연구분야</span>측도론</li>
+					</ul>
+				</div>
+				<a href="#" class="btn_more" target="blank">more</a>
+			</div>
+		</li>
+		<li>
+			<div class="pro_cont">
+				<div class="fl">
+					<div class="pro_pic"><img src="/common/2/css/images/pro/pic1.jpg" alt="김완세" /></div>
+					<div><a href="#" class="btn_home">Homepage</a></div>
+				</div>
+				<div class="fr">
+					<div class="pro_name"><strong>김완세</strong>교수</div>
+					<ul class="item_list">
+						<li><span class="item">POSITION</span>교수</li>
+						<li><span class="item">TEL</span>02-2220-0891</li>
+						<li><span class="item">E-MAIL</span><a href="mailto:wanskim@hanyang.ac.kr">wanskim@hanyang.ac.kr</a></li>
+						<li><span class="item">연구분야</span>비선형 미분방정식</li>
+					</ul>
+				</div>
+				<a href="#" class="btn_more" target="blank">more</a>
+			</div>
+		</li>
+		<li>
+			<div class="pro_cont">
+				<div class="fl">
+					<div class="pro_pic"><img src="/common/2/css/images/pro/pic2.jpg" alt="김희식" /></div>
+					<div><a href="#" class="btn_home">Homepage</a></div>
+				</div>
+				<div class="fr">
+					<div class="pro_name"><strong>김희식</strong>교수</div>
+					<ul class="item_list">
+						<li><span class="item">POSITION</span>교수</li>
+						<li><span class="item">TEL</span>02-2220-0897</li>
+						<li><span class="item">E-MAIL</span><a href="mailto:heekim@hanyang.ac.kr">heekim@hanyang.ac.kr</a></li>
+						<li><span class="item">연구분야</span>대수학</li>
+					</ul>
+				</div>
+				<a href="#" class="btn_more" target="blank">more</a>
+			</div>
+		</li>
+		<li>
+			<div class="pro_cont">
+				<div class="fl">
+					<div class="pro_pic"><img src="/common/2/css/images/pro/pic9.jpg" alt="차경준" /></div>
+					<div><a href="#" class="btn_home">Homepage</a></div>
+				</div>
+				<div class="fr">
+					<div class="pro_name"><strong>차경준</strong>교수</div>
+					<ul class="item_list">
+						<li><span class="item">POSITION</span>교수</li>
+						<li><span class="item">TEL</span>02-2220-0905</li>
+						<li><span class="item">E-MAIL</span><a href="mailto:kjcha@hanyang.ac.kr">kjcha@hanyang.ac.kr</a></li>
+						<li><span class="item">연구분야</span>비모수 회귀통계</li>
+					</ul>
+				</div>
+				<a href="#" class="btn_more" target="blank">more</a>
+			</div>
+		</li>
+		<li>
+			<div class="pro_cont">
+				<div class="fl">
+					<div class="pro_pic"><img src="/common/2/css/images/pro/pic8.jpg" alt="장호종" /></div>
+					<div><a href="#" class="btn_home">Homepage</a></div>
+				</div>
+				<div class="fr">
+					<div class="pro_name"><strong>장호종</strong>교수</div>
+					<ul class="item_list">
+						<li><span class="item">POSITION</span>교수</li>
+						<li><span class="item">TEL</span>02-2220-0896</li>
+						<li><span class="item">E-MAIL</span><a href="mailto:hjang@hanyang.ac.kr">hjang@hanyang.ac.kr</a></li>
+						<li><span class="item">연구분야</span>과학계산</li>
+					</ul>
+				</div>
+				<a href="#" class="btn_more" target="blank">more</a>
+			</div>
+		</li>
+		<li>
+			<div class="pro_cont">
+				<div class="fl">
+					<div class="pro_pic"><img src="/common/2/css/images/pro/pic5.jpg" alt="변양현" /></div>
+					<div><a href="#" class="btn_home">Homepage</a></div>
+				</div>
+				<div class="fr">
+					<div class="pro_name"><strong>변양현</strong>교수</div>
+					<ul class="item_list">
+						<li><span class="item">POSITION</span>교수</li>
+						<li><span class="item">TEL</span>02-2220-0894</li>
+						<li><span class="item">E-MAIL</span><a href="mailto:yhbyun@hanyang.ac.kr">yhbyun@hanyang.ac.kr</a></li>
+						<li><span class="item">연구분야</span>기하적 위상수학</li>
+					</ul>
+				</div>
+				<a href="#" class="btn_more" target="blank">more</a>
+			</div>
+		</li>
+		<li>
+			<div class="pro_cont">
+				<div class="fl">
+					<div class="pro_pic"><img src="/common/2/css/images/pro/pic6.jpg" alt="박춘길" /></div>
+					<div><a href="#" class="btn_home">Homepage</a></div>
+				</div>
+				<div class="fr">
+					<div class="pro_name"><strong>박춘길</strong>교수</div>
+					<ul class="item_list">
+						<li><span class="item">POSITION</span>교수, 수학학과장</li>
+						<li><span class="item">TEL</span>02-2220-0892</li>
+						<li><span class="item">E-MAIL</span><a href="mailto:baak@hanyang.ac.kr">baak@hanyang.ac.kr</a></li>
+						<li><span class="item">연구분야</span>함수해석 및 용소이론</li>
+					</ul>
+				</div>
+				<a href="#" class="btn_more" target="blank">more</a>
+			</div>
+		</li>
+		<li>
+			<div class="pro_cont">
+				<div class="fl">
+					<div class="pro_pic"><img src="/common/2/css/images/pro/pic7.jpg" alt="박홍구" /></div>
+					<div><a href="#" class="btn_home">Homepage</a></div>
+				</div>
+				<div class="fr">
+					<div class="pro_name"><strong>박홍구</strong>교수</div>
+					<ul class="item_list">
+						<li><span class="item">POSITION</span>교수</li>
+						<li><span class="item">TEL</span>02-2220-0894</li>
+						<li><span class="item">E-MAIL</span><a href="mailto:yhbyun@hanyang.ac.kr">yhbyun@hanyang.ac.kr</a></li>
+						<li><span class="item">연구분야</span>대수학 및 조합론</li>
+					</ul>
+				</div>
+				<a href="#" class="btn_more" target="blank">more</a>
+			</div>
+		</li>
+		<li>
+			<div class="pro_cont">
+				<div class="fl">
+					<div class="pro_pic"><img src="/common/2/css/images/pro/pic3.jpg" alt="송정환" /></div>
+					<div><a href="#" class="btn_home">Homepage</a></div>
+				</div>
+				<div class="fr">
+					<div class="pro_name"><strong>송정환</strong>교수</div>
+					<ul class="item_list">
+						<li><span class="item">POSITION</span>교수</li>
+						<li><span class="item">TEL</span>02-2220-0902</li>
+						<li><span class="item">E-MAIL</span><a href="mailto:camp123@hanyang.ac.kr">camp123@hanyang.ac.kr</a></li>
+						<li><span class="item">연구분야</span>암호학 및 수리계획</li>
+					</ul>
+				</div>
+				<a href="#" class="btn_more" target="blank">more</a>
+			</div>
+		</li>
+		<li>
+			<div class="pro_cont">
+				<div class="fl">
+					<div class="pro_pic"><img src="/common/2/css/images/pro/pic11.jpg" alt="허재성" /></div>
+					<div><a href="#" class="btn_home">Homepage</a></div>
+				</div>
+				<div class="fr">
+					<div class="pro_name"><strong>허재성</strong>교수</div>
+					<ul class="item_list">
+						<li><span class="item">POSITION</span>교수</li>
+						<li><span class="item">TEL</span>02-2220-0906</li>
+						<li><span class="item">E-MAIL</span><a href="mailto:hjs@hanyang.ac.kr">hjs@hanyang.ac.kr</a></li>
+						<li><span class="item">연구분야</span>작용소이론</li>
+					</ul>
+				</div>
+				<a href="#" class="btn_more" target="blank">more</a>
+			</div>
+		</li>
+		<li>
+			<div class="pro_cont">
+				<div class="fl">
+					<div class="pro_pic"><img src="/common/2/css/images/pro/pic10.jpg" alt="허영식" /></div>
+					<div><a href="http://math2.hanyang.ac.kr/yshuh/" class="btn_home" target="blank">Homepage</a></div>
+				</div>
+				<div class="fr">
+					<div class="pro_name"><strong>허영식</strong>교수</div>
+					<ul class="item_list">
+						<li><span class="item">POSITION</span>교수</li>
+						<li><span class="item">TEL</span>02-2220-0893</li>
+						<li><span class="item">E-MAIL</span><a href="mailto:yshuh@hanyang.ac.kr">yshuh@hanyang.ac.kr</a></li>
+						<li><span class="item">연구분야</span>저차원 위상수학</li>
+					</ul>
+				</div>
+				<a href="#" class="btn_more" target="blank">more</a>
+			</div>
+		</li>
+		<li>
+			<div class="pro_cont">
+				<div class="fl">
+					<div class="pro_pic"><img src="/common/2/css/images/pro/pic12.jpg" alt="이현미" /></div>
+					<div><a href="#" class="btn_home">Homepage</a></div>
+				</div>
+				<div class="fr">
+					<div class="pro_name"><strong>이현미</strong>교수</div>
+					<ul class="item_list">
+						<li><span class="item">POSITION</span>부교수</li>
+						<li><span class="item">TEL</span>02-2220-0903</li>
+						<li><span class="item">E-MAIL</span><a href="mailto:hyeonmi@hanyang.ac.kr">hyeonmi@hanyang.ac.kr</a></li>
+						<li><span class="item">연구분야</span>Lie 대수와 표현론</li>
+					</ul>
+				</div>
+				<a href="#" class="btn_more" target="blank">more</a>
+			</div>
+		</li>
+		<li>
+			<div class="pro_cont">
+				<div class="fl">
+					<div class="pro_pic"><img src="/common/2/css/images/pro/pic15.jpg" alt="최정순" /></div>
+					<div><a href="#" class="btn_home">Homepage</a></div>
+				</div>
+				<div class="fr">
+					<div class="pro_name"><strong>최정순</strong>교수</div>
+					<ul class="item_list">
+						<li><span class="item">POSITION</span>조교수</li>
+						<li><span class="item">TEL</span>02-2220-2621</li>
+						<li><span class="item">E-MAIL</span><a href="mailto:jungsoonchoi@hanyang.ac.kr">jungsoonchoi@hanyang.ac.kr</a></li>
+						<li><span class="item">연구분야</span>공간통계, 베이지안 통계</li>
+					</ul>
+				</div>
+				<a href="#" class="btn_more" target="blank">more</a>
+			</div>
+		</li>
+	</ul>
+</div>
+<h3 class="contents_title">교육전담교수</h3>
+<div class="pro_wrap">
+	<ul>
+		<li>
+			<div class="pro_cont">
+				<div class="fl">
+					<div class="pro_pic"><img src="/common/2/css/images/pro/pic13.jpg" alt="박영선" /></div>
+					<div><a href="#" class="btn_home">Homepage</a></div>
+				</div>
+				<div class="fr">
+					<div class="pro_name"><strong>박영선</strong>교수</div>
+					<ul class="item_list">
+						<li><span class="item">POSITION</span>조교수</li>
+						<li><span class="item">TEL</span>02-2220-2545</li>
+						<li><span class="item">E-MAIL</span><a href="mailto:pppppys@hanyang.ac.kr">pppppys@hanyang.ac.kr</a></li>
+					</ul>
+				</div>
+				<a href="#" class="btn_more" target="blank">more</a>
+			</div>
+		</li>
+		<li>
+			<div class="pro_cont">
+				<div class="fl">
+					<div class="pro_pic"><img src="/common/2/css/images/pro/pic30.jpg" alt="황신철" /></div>
+					<div><a href="#" class="btn_home">Homepage</a></div>
+				</div>
+				<div class="fr">
+					<div class="pro_name"><strong class="fs1">황신철</strong>교수</div>
+					<ul class="item_list">
+						<li><span class="item">POSITION</span>조교수</li>
+						<li><span class="item">TEL</span></li>
+						<li><span class="item">E-MAIL</span><a href="mailto:A003598@hanyang.ac.kr">A003598@hanyang.ac.kr</a></li>
+					</ul>
+				</div>
+				<a href="#" class="btn_more" target="blank">more</a>
+			</div>
+		</li>
+		<li>
+			<div class="pro_cont">
+				<div class="fl">
+					<div class="pro_pic"><img src="/common/2/css/images/pro/pic14.jpg" alt="Benjamin Dieckman Willson" /></div>
+					<div><a href="#" class="btn_home">Homepage</a></div>
+				</div>
+				<div class="fr">
+					<div class="pro_name"><strong class="fs1">Benjamin Dieckman Willson</strong>교수</div>
+					<ul class="item_list">
+						<li><span class="item">POSITION</span>조교수</li>
+						<li><span class="item">TEL</span></li>
+						<li><span class="item">E-MAIL</span><a href="mailto:bwillson@hanyang.ac.kr">bwillson@hanyang.ac.kr</a></li>
+					</ul>
+				</div>
+				<a href="#" class="btn_more" target="blank">more</a>
+			</div>
+		</li>
+	</ul>
+</div>
+<p><img src="/common/2/css/images/contents/prof2.jpg" alt="초빙교수와 시간강사 " /></p>

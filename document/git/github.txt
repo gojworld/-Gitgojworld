@@ -1,0 +1,9 @@
+Git Hub(깃 허브)연동방법
+
+github.com 가서 사인업 -> 사인인 한 후 
+repository 생성 -> 생성하면서 Initialize this repository with a README 체크해서 리드미 파일 만들고
+연동하고 싶은 프로젝트를 쉐어 프로젝트 git으로 한다음 설정해주고 url 연결
+그다음 프로젝트를 커밋앤푸쉬를 한번해준 후 
+pull을 받으면 리드미 파일이 받아질꺼임 
+그러면 그 때 team->remote->push를 하면 뭔가 파일목록이 다르게 뜨면서 깃허브에 프로젝트가 연동이 되어있을꺼임
+그이제 끝난것임ㅋㅋㅋ

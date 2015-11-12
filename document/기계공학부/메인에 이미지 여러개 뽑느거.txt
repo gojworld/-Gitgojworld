@@ -1,0 +1,42 @@
+public static MyMap listToKeyMap(List<MyCamelMap> list,String key){
+		MyMap result=new MyMap();
+		for(MyCamelMap map:list){
+			result.put(map.getString(key),map);
+		}
+		return result;
+	}
+
+
+model.addAttribute("nsevList",Functions.listToKeyMap(nsevService.findNsevImgList(paramMap), "type"));
+
+
+리스트 쿼리문에
+SELECT
+			T1.*
+		FROM(
+			SELECT
+				TYPE
+				,NSEV_IMG_SEQ
+				,(SELECT CAST(CONCAT(UFL.SVR_FILE_NM) AS CHAR) FROM UL_FILE_LST UFL WHERE UFL.UF_SEQ = T1.UF_SEQ AND UFL.DEL_DT IS NULL LIMIT 1) PIC
+			FROM
+				NSEV_TYPE T1
+			WHERE
+				T1.TYPE = 'A'
+		)T1
+		UNION ALL
+		SELECT
+			T1.*
+		FROM(
+			SELECT
+				TYPE
+				,NSEV_IMG_SEQ
+				,(SELECT CAST(CONCAT(UFL.SVR_FILE_NM) AS CHAR) FROM UL_FILE_LST UFL WHERE UFL.UF_SEQ = T1.UF_SEQ AND UFL.DEL_DT IS NULL LIMIT 1) PIC
+			FROM
+				NSEV_TYPE T1
+			WHERE
+				T1.TYPE = 'B'
+		)T1
+
+
+이렇게 유니온을 type 으로 나누어서 입력하면
+리스트 하나하나가 타입컬럼값으로 나눈 데이터로 나옴(인포데이터처럼)

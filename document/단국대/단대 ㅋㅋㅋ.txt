@@ -1,0 +1,111 @@
+72000420 권용훈[대학원] (논문심사, 외국어시험)
+32122604 조현이[재학생] (조기졸업) 봉사
+32090003 권예은[재학생] (졸업연기)
+12090524 조완제[교수님] (상담신청확인)
+32091658 곽태원 1034917
+32131740 이현재[재학생]
+32155342 진일명[재학생] 수강시간표
+연구비 로그인 아이디 P1500442
+32130101 서동현[휴학생]
+32120120 오종환[재학생]
+32101200 김진실[졸업생]
+32110228 안수빈[제적생]
+교무지원처 학사지원팀 남희경 12140888
+교무처 학사팀 조은미 12122220
+교수학습개발센터 김정미 11910331
+
+
+32150271 최종성적확인
+32121451
+32091510
+
+32022255 교직
+32112224 교직
+32150271 권은지 성적확인
+72150001 2076318 대학원 성적확인
+
+
+12102133 상담확인 전덕재 교수님
+select * from UNIV.LSSN_TKCRS_PL_HLPER_BAS LTPH
+수강계획도우미 쿼리
+
+
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+누적성적조회 상세보기 윗부분 짤림
+
+수강철회신청 - 마감하는거 버튼이랑 신청이랑 취소 되는거 확인해야함(타이틀쪽에 폐강 버튼도)
+수강계획도우미 - 목록이 나오지 않아 확인 불가
+
+
+
+종합정보시스템>시스템>게시판관리>FAQ등록
+게시판 종류에서 모바일앱오류신고게시판
+
+(function(){
+			
+		})();
+
+
+
+폼인풋 스트롱 효과 주기
+ fc_black fw_b
+
+
+webmaincontroller
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+금액 MASK_CURRENCY
+날짜 MASK_DATE
+
+<div class="btn_wrap">
+	<a href="#" class="btn gray02">목록보기</a>
+</div>
+
+
+
+파라미터
+search.setRsrId(SecurityContextHelper.getUserDetails().getIntgUid());
+
+${userDetails.userNm}
+/건수
+${fn:length(rprjCtstList)}
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+수강계획도우미 강의 신청
+$("#addHp a").click(function (e) {
+        e.preventDefault(); 
+        if("${fn:length(tkcrsPlPcondList)}" >= 15){
+            alert("수강계획도우미는 15개 과목까지 등록 가능합니다.");
+            return null;
+        }
+        var param = {
+                "workDiv"   : $(this).parents("td").find("[name$=workDiv]").val()
+               ,"opOrgid"   : $(this).parents("td").find("[name$=opOrgid]").val()
+               ,"subjId"    : $(this).parents("td").find("[name$=subjId]").val()
+               ,"subjNm"    : $(this).parents("td").find("[name$=subjNm]").val()
+               ,"dvclsNb"   : $(this).parents("td").find("[name$=dvclsNb]").val()
+               ,"yy"            : "${tcamSearch.yy}"
+               ,"semCd"         : "${tcamSearch.semCd}"
+               ,"collCd"        : "${tkcrsPlPcondList[0].collCd}"
+               ,"qrySxn"        : "${tcamSearch.qrySxn}"
+               ,"lesnPlcCd"     : "${tcamSearch.lesnPlcCd}"
+               ,"dpmtCd"        : "${tcamSearch.dpmtCd}"
+               ,"pstnOrgId"     : "${tcamSearch.pstnOrgId}"
+               ,"mjSubjKnm"     : "${tcamSearch.mjSubjKnm}"
+               ,"mjDowCd"       : "${tcamSearch.mjDowCd}"
+               ,"grade"         : "${tcamSearch.grade}"
+               ,"deptLoctCd"    : "${tcamSearch.deptLoctCd}"
+               ,"curiCparCd"    : "${tcamSearch.curiCparCd}"
+               ,"culSubjKnm"    : "${tcamSearch.culSubjKnm}"
+               ,"culDowCd"      : "${tcamSearch.culDowCd}"
+        };
+        $.submit("univ/lssn/tcam/saveTkcrsPlHlper.do",param);
+    });
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+
+

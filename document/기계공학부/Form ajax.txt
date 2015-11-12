@@ -1,0 +1,33 @@
+
+
+
+var $boardInfo=$("#boardInfo");
+
+$("#saveBtn").click(function(e){
+				e.preventDefault();
+				$.ajax({
+					"url":"/manage/prs/savePrs.do",
+					"data":$boardInfo.serialize(),
+					"type":"post",
+					"dataType":"json",
+					"success":function(result){
+						if(result.board.status!=-1){
+							$.fun.alert({
+								"content":result.board.status==2?"등록되었습니다.":"수정되었습니다.",
+								"action":function(){
+									$.submit({
+										"method":"get",
+										"action":"./findPrsMngtList.do"
+									},{
+										"boardSeq":result.board.boardSeq,
+									});
+								}
+							});
+						}else{
+							$.fun.alert({
+								"content":"요청하신 작업이 실패되었습니다."
+							});
+						}
+					}
+				});
+			});

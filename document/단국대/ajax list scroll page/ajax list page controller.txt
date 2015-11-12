@@ -1,0 +1,15 @@
+	/**
+	 * 포탈 포털공지 리스트 <죽전>
+	 *
+	 * @param search
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="/views/findPtalAnncJList.do")
+	public String findPtalAnncJList(PtalSearch search,Model model){
+		return "/etcs/ptal/findPtalAnncJList";
+	}
+	@RequestMapping(value="/findPtalAnncListToJSON.do")
+	public void findPtalAnncListToJSON(PtalSearch search,Model model){
+		model.addAttribute("ptalAnncJList",ptalService.findPtalAnncList(search));
+	}

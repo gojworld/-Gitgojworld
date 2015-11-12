@@ -1,0 +1,18 @@
+<resin xmlns="http://caucho.com/ns/resin" xmlns:resin="urn:java:com.caucho.resin">
+	<log-handler name="com.caucho" level="info" path="stdout:" timestamp="[%y.%m.%d %H:%M:%S]" format="[${thread}] ${log.level} ${log.shortName} - ${log.message}" />
+	<resin:import path="${resin.home}/conf/cluster-default.xml" />
+	<system-property env="local" />
+	<cluster id="web">
+		<character-encoding>utf-8</character-encoding>
+		<server id="" address="127.0.0.1" port="6800" />
+		<server-default>
+			<http address="*" port="8080" />
+
+		</server-default>
+		<host id="" root-directory=".">
+			<web-app id="/" root-directory="D:\Project\zxvcvvvvvvv\WebContent" work-dir="D:\Project\work\zxvcvvvvvvv">
+				<character-encoding>UTF-8</character-encoding>
+			</web-app>
+		</host>
+	</cluster>
+</resin>

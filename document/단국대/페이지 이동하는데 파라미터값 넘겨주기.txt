@@ -1,0 +1,8 @@
+<c:redirect url="/univ/lssn/etcm/views/findClinicTmDscForm.do">
+	<c:param name="vldSubjId">1050</c:param>
+</c:redirect>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$(location).attr('href',"univ/lssn/etcm/views/findClinicTmDscForm.do?vldSubjId=1050");
+	});
+</script>

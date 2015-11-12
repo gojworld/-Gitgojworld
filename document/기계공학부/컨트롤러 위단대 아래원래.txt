@@ -1,0 +1,30 @@
+	@RequestMapping(value="/views/findSbjtCrsList.do")
+	public String findSbjtCrsList(HashMap<String,Object> paramMap,Model model){
+		model.addAttribute("boardList",boardService.getBoardList("edu",paramMap));
+		return "/manage/edu/findSbjtCrsList";
+	}
+	/*
+	 * @RequestMapping(value="/views/findSbjtCrsList.do")
+	 * public ModelAndView ModelAndView(HashMap<String,Object> paramMap,Model model){
+	 * return new ModelAndView("/manage/edu/findSbjtCrsList",boardService.getBoardList(paramMap));
+	 * }
+	 */
+	/**
+	 * 교과과정(ABEEK) => 등록폼
+	 *
+	 * @return
+	 */
+	@RequestMapping(value="/views/findSbjtCrsForm.do")
+	public String findSbjtCrsForm(@RequestParam HashMap<String,Object> paramMap,Model model){
+		model.addAttribute("boardInfo",boardService.getBoardInfo(paramMap));
+		return "/manage/edu/findSbjtCrsForm";
+	}
+	/*
+	 * @RequestMapping(value="/views/findSbjtCrsForm.do")
+	 * public ModelAndView findSbjtCrsForm(@RequestParam HashMap<String,Object> paramMap){
+	 * return new ModelAndView("/manage/edu/findSbjtCrsForm",boardService.getBoardInfo(paramMap));
+	 * }
+	 */
+
+
+2015-06-02

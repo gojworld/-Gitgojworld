@@ -1,0 +1,179 @@
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ include file="/WEB-INF/includes/taglibs.jsp"%>
+<script type="text/javascript">
+	$(document).ready(function(){
+		var $grDscGsWTpl=$("#grDscGsW").clone();
+		$("#grDscGsW").remove();
+		$(".txt_more .btn_more").click(function(e){
+			e.preventDefault();
+			var params=$(this).parents(".txt_more").params();
+			$.getJSON("univ/cret/gdcm/findSemClAggrGrDscWList.do",params,function(data){
+				if(data.semClGrDsc.length>0){
+					var $grDscGsW=$grDscGsWTpl.clone();
+					var $grDscGsWList=$grDscGsW.find(".grDscGsWList");
+					var $tbl_round=$grDscGsWList.find("div.tbl_round").clone();
+					$grDscGsWList.find("div.tbl_round").remove();
+					$.each(data.semClGrDsc,function(index,entry){
+						console.log(entry);
+						$grDscGsWList.addRow($tbl_round.clone(),entry);
+					});
+					$grDscGsW.bindParams(params);
+					$grDscGsW.layout({
+						"title":"누적성적조회(대학원)"
+					});
+				}
+			});
+		});
+		$(".btn_more:eq(3)").click();
+	});
+</script>
+<div class="grds_wrap">
+	<div class="group">
+		<div class="tit_group">
+			<h3>학력정보</h3>
+		</div>
+		<div class="tbl_line tbl_row">
+			<table>
+				<caption>누적성적조회(대학원)</caption>
+				<thead>
+					<tr>
+						<th scope="col">신청학점</th>
+						<th scope="col">취득학점</th>
+						<th scope="col">평균학점</th>
+						<th scope="col">평점</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<c:forEach var="totAggrGrDsc" items="${totAggrGrDsc}" varStatus="status">
+							<td class="ta_c">
+								<strong>${totAggrGrDsc.aplCrd}</strong>
+							</td>
+							<td class="ta_c">
+								<strong class="fc_blue02 fw_bb">${totAggrGrDsc.acqCrd}</strong>
+							</td>
+							<td class="ta_c">
+								<strong class="fc_blue02 fw_bb">${totAggrGrDsc.grvScor}</strong>
+							</td>
+							<td class="ta_c">
+								<strong>${totAggrGrDsc.avgGrpt}</strong>
+							</td>
+						</c:forEach>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="group">
+		<div class="tit_group">
+			<h3>학기별 성적</h3>
+		</div>
+		<c:forEach var="semClAggrGrDsc" items="${semClAggrGrDsc}" varStatus="status">
+			<div class="tbl_line">
+				<div class="tbl_dsp">
+					<div class="cell_mid w_55 ta_c">
+						<strong class="fs_12">${semClAggrGrDsc.yy}년 ${semClAggrGrDsc.semCdnm} 평균</strong>
+						<br>
+						<strong class="fs_big fc_org">${semClAggrGrDsc.avgGrpt}</strong>
+					</div>
+					<ul class="list_line">
+						<li>
+							<span>신청학점</span>
+							<em class="fs_13 fw_bb">${semClAggrGrDsc.aplCrd}</em>
+						</li>
+						<li>
+							<span>취득학점</span>
+							<em class="fs_13 fw_bb">${semClAggrGrDsc.acqCrd}</em>
+						</li>
+						<li>
+							<span>평점</span>
+							<em class="fs_13 fw_bb">${semClAggrGrDsc.avgScore}</em>
+						</li>
+					</ul>
+				</div>
+				<div class="txt_more">
+					<input type="hidden" name="yy" value="${semClAggrGrDsc.yy}">
+					<input type="hidden" name="semCd" value="${semClAggrGrDsc.semCd}">
+					<input type="hidden" name="aplCrd" value="${semClAggrGrDsc.aplCrd}">
+					<input type="hidden" name="acqCrd" value="${semClAggrGrDsc.acqCrd}">
+					<input type="hidden" name="avgScore" value="${semClAggrGrDsc.avgScore}">
+					<a href="#" class="btn_more">상세내용 보기</a>
+				</div>
+			</div>
+		</c:forEach>
+	</div>
+</div>
+<div class="gswm_wrap" id="grDscGsW">
+	<div class="tbl_dsp">
+		<div class="cell_mid line_rgt w_55 ta_c">
+			<strong>{yy}년 {semCd}학기 평균</strong>
+			<br>
+			<strong class="fs_big fc_org">{avgScore}</strong>
+		</div>
+		<table>
+			<caption>누적성적조회 상세보기(대학원)</caption>
+			<thead>
+				<tr>
+					<th scope="col">신청학점</th>
+					<th scope="col">취득학점</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						<strong>{aplCrd}</strong>
+					</td>
+					<td>
+						<strong>{acqCrd}</strong>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<table>
+			<caption>누적성적조회 상세보기(대학원)</caption>
+			<thead>
+				<tr>
+					<th scope="col">평점</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						<strong class="fc_blue">86</strong>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="group grDscGsWList">
+		<div class="tit_group">
+			<h3>학기별 성적</h3>
+		</div>
+		<div class="tbl_round">
+			<div class="tbl_dsp">
+				<div class="cell_mid">
+					<strong class="fs_16 fw_n">[{grCparCdnm}] {subjKnm}</strong>
+				</div>
+			</div>
+			<div class="tbl_dsp type_solid ta_c">
+				<div class="cell_mid">
+					<em>교과목코드</em><br />
+					<strong>{subjId}</strong>
+					<!-- strong에 꼭 값이 있어야 line이 깨지지 않음. 값이 없을시 &nbsp; 공백문자라도 넣어줘야함 -->
+				</div>
+				<div class="cell_mid">
+					<em>취득학점</em><br />
+					<strong>{acqCrd}</strong>
+				</div>
+				<div class="cell_mid">
+					<em>성적</em><br />
+					<strong class="fc_blue fw_bb">{gradeCdnm}</strong>
+				</div>
+				<div class="cell_mid">
+					<em>평균</em><br />
+					<strong class="fc_blue fw_bb">{grpt}</strong>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

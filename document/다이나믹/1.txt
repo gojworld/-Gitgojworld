@@ -1,0 +1,17 @@
+1. web.xml mvcServlet   *.do
+2. spring-context.xml
+   -> context:component-scan
+
+Controller
+이벤트발생대상선정(제목) -> 스크립트 등록 -> 호출전에(눌러보고) param 체크 aJax -> console.log(data)
+
+3. Controller.java -> request - (해당 mapping URL  등록)
+-> 조건 @Autowired            Service 선언
+
+4. Service (실제영역)
+5. Service(Impl)
+-> 조건 @Autowired    - 해당 Repository 선언
+
+6. (pri)Mapper
+
+7. xml DB연동
