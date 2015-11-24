@@ -1,4 +1,0 @@
-단국대 = 59.11.43.132		syworks // syworks
-59.11.43.204				usrpark // usrpark22
-
-신구대 = 210.102.151.64		administrator // sg1111!

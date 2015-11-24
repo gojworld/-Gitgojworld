@@ -1,1 +1,0 @@
-window.setTimeout('window.location.reload()',5000); //60초마다 리플리쉬 시킨다 1000이 1초가 된다.

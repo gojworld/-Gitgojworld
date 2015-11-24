@@ -1,9 +1,0 @@
-개발서버 정지 실행
-
-remote 접속해서
-
-1. cd /srv
-2. cd tomcat
-3. cd bin
-4. ./catalina.sh stop
-5. ./catalina.sh start

@@ -1,5 +1,0 @@
-ps -ef | grep hycns
-
-kill -9 30737
-
--ef | grep hycns

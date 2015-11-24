@@ -1,6 +1,0 @@
-controller
-
-param.put("schedule", 28);
-
-list
-jqeury - $("#schedule option:eq(2)").attr("selected", "selected");

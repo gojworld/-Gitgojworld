@@ -1,7 +1,0 @@
-/**
- * 모바일 나의 사진 보여주기
- * 싸이웍스 박주원PRO
- * */
-if(WebUtils.isRequestedMobile()){
-	model.addAttribute("memberPhoto", memberService.findMemberPhoto(SecurityContextHelper.getUserDetails().getAcctInfoId()));
-}

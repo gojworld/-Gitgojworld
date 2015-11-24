@@ -1,7 +1,0 @@
-<a href="univ/cret/gdmg/findLtrClTskEvalStuList.do"
-data-params='{"yy"       : "${ltrClTskList.yy}"
-	  ,"semCd"    : "${ltrClTskList.semCd}"
-	  ,"subjId"   : "${ltrClTskList.subjId}"
-	  ,"dvclsNb"  : "${ltrClTskList.dvclsNb}"}'>
-<c:out value="${ltrClTskList.subjKnm}" escapeXml="true" />
-</a>

@@ -1,6 +1,0 @@
-JOB_INTERN_MANAGE --> comp_code, student_num(학번), year, season, del_yn
-JOB_STUDENT --> student_num(학번), std_num, dept(학과명), dept_code(학과코드), major(전공명), major_code(전공코드),
-	grade(학년), tot_credit(학점), name(성명), sex(성별), birthday(생일), tel, hp, email, jidogyosu_dept, jidogyosu_name
-JOB_COMP(회사리스트) --> comp_code, comp_name(회사명), main_dept_name(관련학과명?), ceo_name(대표자), comp_num1~3(사업자번호)
-	homepage(홈페이지), comp_type, zipcode1~2(우편번호), addr1~2(회사주소), id, pw, 
-JOB_SCHEDULE(현장실습리스트) --> 

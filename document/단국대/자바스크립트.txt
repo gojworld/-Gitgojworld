@@ -1,2 +1,0 @@
-뒤로가기 history back
-<a href="javascript:history.back()" class="btn white">취소</a>

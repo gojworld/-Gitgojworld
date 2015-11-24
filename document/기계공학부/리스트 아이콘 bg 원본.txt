@@ -1,8 +1,0 @@
-<span class="new_bg"></span>
-<span class="list_flie_bg"></span>
-<!-- 리플수 -->
-<span class="re_count_bg">123</span>
-
-
-
-<a href="/download.do?ufSeq=112&amp;fileSeq=182">개잘생김 (1).JPG</a><br>
