@@ -1,0 +1,4 @@
+크롬
+sudo apt-get install google-chrome-stable
+
+$ sudo apt-get install vim
